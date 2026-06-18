@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:phroneo/core/widgets/custom_title.dart';
 import 'package:phroneo/features/how_to_play/domain/entities/onboarding_page_data.dart';
 
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
 
@@ -20,16 +20,8 @@ class TutorialPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              page.title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: AppFontSize.display,
-                fontFamily: AppFonts.cinzel,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryColor
-              ),
-            ),
+
+            CustomTitle(text: page.title),
 
             const SizedBox(height: 24),
 

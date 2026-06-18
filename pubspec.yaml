@@ -1,6 +1,6 @@
 name: phroneo
-description: "A new Flutter project."
-version: 1.0.0+1
+description: "A cooperative party game where players work together to discover the hidden order."
+version: 0.1.0+1
 
 environment:
   sdk: ^3.12.2

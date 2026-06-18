@@ -31,4 +31,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get previous => 'Prev';
+
+  @override
+  String get letsPlay => 'Let\'s play?';
 }

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
-import 'package:phroneo/core/theme/app_font_size.dart';
 import 'package:phroneo/core/widgets/custom_outlined_button.dart';
 import 'package:phroneo/features/how_to_play/domain/entities/onboarding_page_data.dart';
 import 'package:phroneo/features/how_to_play/presentation/widgets/tutorial_page.dart';
 
-import '../../../../core/theme/app_fonts.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../l10n/app_localizations.dart';
 
@@ -77,7 +74,9 @@ class _HowToPlayPageState extends State<HowToPlayPage> {
           currentPage == onboardingPages.length - 1 ?
           CustomElevatedButton(
             text: AppLocalizations.of(context)!.ready,
-            onPressed: () {},
+            onPressed: () {
+              context.go('/home');
+              },
           ) :
           CustomElevatedButton(
             text: AppLocalizations.of(context)!.next,
