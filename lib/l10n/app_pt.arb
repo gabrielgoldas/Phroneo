@@ -1,0 +1,10 @@
+{
+  "appName"       : "Phroneo",
+  "login"         : "Entrar",
+  "createRoom"    : "Criar Sala",
+  "googleLogin"   : "Entrar com o Google",
+  "privacyPolicy" : "Selecione sua conta aqui. \nAo entrar, você concorda com nossa política de privacidade",
+  "ready"         : "Pronto!",
+  "next"          : "Próximo",
+  "previous"      : "Anterior"
+}
