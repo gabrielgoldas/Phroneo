@@ -142,6 +142,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Prev'**
   String get previous;
+
+  /// No description provided for @letsPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s play?'**
+  String get letsPlay;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

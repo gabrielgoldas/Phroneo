@@ -6,5 +6,6 @@
   "privacyPolicy" : "Select your account here. \nBy signing in, you agree to our privacy policy",
   "ready"         : "Ready!",
   "next"          : "Next",
-  "previous"      : "Prev"
+  "previous"      : "Prev",
+  "letsPlay"      : "Let's play?"
 }

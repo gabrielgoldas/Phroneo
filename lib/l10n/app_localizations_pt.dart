@@ -31,4 +31,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get previous => 'Anterior';
+
+  @override
+  String get letsPlay => 'Vamos jogar?';
 }

@@ -6,5 +6,6 @@
   "privacyPolicy" : "Selecione sua conta aqui. \nAo entrar, você concorda com nossa política de privacidade",
   "ready"         : "Pronto!",
   "next"          : "Próximo",
-  "previous"      : "Anterior"
+  "previous"      : "Anterior",
+  "letsPlay"      : "Vamos jogar?"
 }

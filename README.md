@@ -1,4 +1,4 @@
-# phroneo
+# Phroneo
 
 A new Flutter project.
 
