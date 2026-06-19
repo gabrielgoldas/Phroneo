@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:phroneo/core/utils/localization_build_context.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
-import '../../../../l10n/app_localizations.dart';
 import '../../features/login/presentation/widgets/profile_menu_bottom_sheet.dart';
 import '../theme/app_fonts.dart';
 
@@ -26,7 +26,7 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: AppColors.background,
       centerTitle: true,
       title: Text(
-        AppLocalizations.of(context)!.appName,
+        context.l10n.app_name,
         style: const TextStyle(
           fontFamily: AppFonts.cinzel,
           fontSize: AppFontSize.bodySmall,

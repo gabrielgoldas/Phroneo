@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
+import '../../../../core/utils/localization_build_context.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 
 class CreateMatchMenuBottomSheet extends StatefulWidget {
@@ -53,7 +54,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Criar uma partida',
+              context.l10n.create_match,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: AppFontSize.titleMedium,
@@ -66,7 +67,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
             const SizedBox(height: 24),
 
             Text(
-              'Quantas pessoas vão jogar?',
+              context.l10n.player_count_question,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: AppFontSize.titleSmall,
@@ -115,7 +116,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
             const SizedBox(height: 18),
 
             CustomElevatedButton(
-                text: "Criar",
+                text: context.l10n.confirm_creation,
                 onPressed: () {}
             ),
           ],

@@ -5,8 +5,8 @@ import 'package:phroneo/core/widgets/custom_outlined_button.dart';
 import 'package:phroneo/features/how_to_play/domain/entities/onboarding_page_data.dart';
 import 'package:phroneo/features/how_to_play/presentation/widgets/tutorial_page.dart';
 
+import '../../../../core/utils/localization_build_context.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
-import '../../../../l10n/app_localizations.dart';
 
 class HowToPlayPage extends StatefulWidget {
   const HowToPlayPage({super.key});
@@ -73,13 +73,13 @@ class _HowToPlayPageState extends State<HowToPlayPage> {
 
           currentPage == onboardingPages.length - 1 ?
           CustomElevatedButton(
-            text: AppLocalizations.of(context)!.ready,
+            text: context.l10n.ready,
             onPressed: () {
               context.go('/home');
               },
           ) :
           CustomElevatedButton(
-            text: AppLocalizations.of(context)!.next,
+            text: context.l10n.next,
             onPressed: () {
               if (currentPage < onboardingPages.length - 1) {
                 _pageController.nextPage(
@@ -92,7 +92,7 @@ class _HowToPlayPageState extends State<HowToPlayPage> {
 
           (currentPage > 0) ?
             CustomOutlinedButton(
-              text: AppLocalizations.of(context)!.previous,
+              text: context.l10n.previous,
               onPressed: () {
                 if (currentPage > 0) {
                   _pageController.previousPage(

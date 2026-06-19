@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 import 'package:phroneo/core/widgets/custom_header.dart';
 import 'package:phroneo/features/login/presentation/widgets/create_match_menu_bottom_sheet.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/custom_title.dart';
-import '../../../../l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,9 +19,6 @@ class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-  final strings     = AppLocalizations.of(context)!;
-
     return Scaffold(
       appBar: const CustomHeader(showAccount: true),
       backgroundColor: AppColors.background,
@@ -35,12 +32,12 @@ class _HomePage extends State<HomePage> {
 
               const SizedBox(height: 12),
 
-              CustomTitle(text: strings.letsPlay),
+              CustomTitle(text: context.l10n.welcome_message),
 
               const SizedBox(height: 32),
 
               CustomElevatedButton(
-                  text: "Criar uma partida",
+                  text: context.l10n.create_match,
                   onPressed: () {
                     CreateMatchMenuBottomSheet.showCreateMatchMenuBottomSheet(context);
                   }
@@ -49,7 +46,7 @@ class _HomePage extends State<HomePage> {
               const SizedBox(height: 12),
 
               CustomElevatedButton(
-                  text: "Entrar na partida",
+                  text: context.l10n.join_match,
                   onPressed: () {}
               ),
             ],

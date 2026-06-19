@@ -4,22 +4,18 @@ import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/theme/app_font_size.dart';
 import 'package:phroneo/core/theme/app_fonts.dart';
+import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_header.dart';
 import 'package:phroneo/features/home/presentation/widgets/custom_elevated_icon_button.dart';
-import 'package:phroneo/l10n/app_localizations.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final strings = AppLocalizations.of(context)!;
-
     return Scaffold(
       backgroundColor: AppColors.background,
-
       appBar: const CustomHeader(),
-
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -31,7 +27,7 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 12),
 
               Text(
-                strings.appName,
+                context.l10n.app_name,
                 style: TextStyle(
                   fontFamily: AppFonts.cinzel,
                   fontWeight: FontWeight.bold,
@@ -43,7 +39,7 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 54),
 
               Text(
-                strings.privacyPolicy,
+                context.l10n.privacy_policy,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontFamily: AppFonts.cormorantInfant,
@@ -59,7 +55,7 @@ class LoginPage extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 textColor: AppColors.black,
                 filePath: 'assets/icons/google_icon.svg',
-                labelText: strings.googleLogin,
+                labelText: context.l10n.login_google,
                 onPressed: () {
                   context.go('/onboarding');
                 },

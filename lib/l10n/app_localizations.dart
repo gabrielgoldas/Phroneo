@@ -95,11 +95,11 @@ abstract class AppLocalizations {
     Locale('pt')
   ];
 
-  /// No description provided for @appName.
+  /// No description provided for @app_name.
   ///
   /// In en, this message translates to:
   /// **'Phroneo'**
-  String get appName;
+  String get app_name;
 
   /// No description provided for @login.
   ///
@@ -107,23 +107,23 @@ abstract class AppLocalizations {
   /// **'Login'**
   String get login;
 
-  /// No description provided for @createRoom.
+  /// No description provided for @create_room.
   ///
   /// In en, this message translates to:
   /// **'Create Room'**
-  String get createRoom;
+  String get create_room;
 
-  /// No description provided for @googleLogin.
+  /// No description provided for @login_google.
   ///
   /// In en, this message translates to:
   /// **'Sign in with Google'**
-  String get googleLogin;
+  String get login_google;
 
-  /// No description provided for @privacyPolicy.
+  /// No description provided for @privacy_policy.
   ///
   /// In en, this message translates to:
   /// **'Select your account here. \nBy signing in, you agree to our privacy policy'**
-  String get privacyPolicy;
+  String get privacy_policy;
 
   /// No description provided for @ready.
   ///
@@ -143,11 +143,53 @@ abstract class AppLocalizations {
   /// **'Prev'**
   String get previous;
 
-  /// No description provided for @letsPlay.
+  /// No description provided for @welcome_message.
   ///
   /// In en, this message translates to:
   /// **'Let\'s play?'**
-  String get letsPlay;
+  String get welcome_message;
+
+  /// No description provided for @create_match.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a match'**
+  String get create_match;
+
+  /// No description provided for @join_match.
+  ///
+  /// In en, this message translates to:
+  /// **'Join match'**
+  String get join_match;
+
+  /// No description provided for @confirm_creation.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get confirm_creation;
+
+  /// No description provided for @player_count_question.
+  ///
+  /// In en, this message translates to:
+  /// **'How many players?'**
+  String get player_count_question;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'My profile'**
+  String get profile;
+
+  /// No description provided for @how_to_play.
+  ///
+  /// In en, this message translates to:
+  /// **'How to play'**
+  String get how_to_play;
+
+  /// No description provided for @exit.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get exit;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

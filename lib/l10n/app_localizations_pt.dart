@@ -9,19 +9,19 @@ class AppLocalizationsPt extends AppLocalizations {
   AppLocalizationsPt([String locale = 'pt']) : super(locale);
 
   @override
-  String get appName => 'Phroneo';
+  String get app_name => 'Phroneo';
 
   @override
   String get login => 'Entrar';
 
   @override
-  String get createRoom => 'Criar Sala';
+  String get create_room => 'Criar Sala';
 
   @override
-  String get googleLogin => 'Entrar com o Google';
+  String get login_google => 'Entrar com o Google';
 
   @override
-  String get privacyPolicy => 'Selecione sua conta aqui. \nAo entrar, você concorda com nossa política de privacidade';
+  String get privacy_policy => 'Selecione sua conta aqui. \nAo entrar, você concorda com nossa política de privacidade';
 
   @override
   String get ready => 'Pronto!';
@@ -33,5 +33,26 @@ class AppLocalizationsPt extends AppLocalizations {
   String get previous => 'Anterior';
 
   @override
-  String get letsPlay => 'Vamos jogar?';
+  String get welcome_message => 'Vamos jogar?';
+
+  @override
+  String get create_match => 'Criar uma partida';
+
+  @override
+  String get join_match => 'Entrar na partida';
+
+  @override
+  String get confirm_creation => 'Criar';
+
+  @override
+  String get player_count_question => 'Quantas pessoas vão jogar?';
+
+  @override
+  String get profile => 'Meu perfil';
+
+  @override
+  String get how_to_play => 'Como jogar';
+
+  @override
+  String get exit => 'Sair';
 }

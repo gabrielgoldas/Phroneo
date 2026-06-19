@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class ProfileMenuBottomSheet extends StatelessWidget {
   const ProfileMenuBottomSheet({super.key});
 
@@ -13,6 +15,8 @@ class ProfileMenuBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context)!;
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
