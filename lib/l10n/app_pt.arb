@@ -1,11 +1,18 @@
 {
-  "appName"       : "Phroneo",
-  "login"         : "Entrar",
-  "createRoom"    : "Criar Sala",
-  "googleLogin"   : "Entrar com o Google",
-  "privacyPolicy" : "Selecione sua conta aqui. \nAo entrar, você concorda com nossa política de privacidade",
-  "ready"         : "Pronto!",
-  "next"          : "Próximo",
-  "previous"      : "Anterior",
-  "letsPlay"      : "Vamos jogar?"
+  "app_name"                : "Phroneo",
+  "login"                   : "Entrar",
+  "create_room"             : "Criar Sala",
+  "login_google"            : "Entrar com o Google",
+  "privacy_policy"          : "Selecione sua conta aqui. \nAo entrar, você concorda com nossa política de privacidade",
+  "ready"                   : "Pronto!",
+  "next"                    : "Próximo",
+  "previous"                : "Anterior",
+  "welcome_message"         : "Vamos jogar?",
+  "create_match"            : "Criar uma partida",
+  "join_match"              : "Entrar na partida",
+  "confirm_creation"        : "Criar",
+  "player_count_question"   : "Quantas pessoas vão jogar?",
+  "profile"                 : "Meu perfil",
+  "how_to_play"             : "Como jogar",
+  "exit"                    : "Sair"
 }

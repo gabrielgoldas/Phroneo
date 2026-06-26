@@ -1,11 +1,18 @@
 {
-  "appName"       : "Phroneo",
-  "login"         : "Login",
-  "createRoom"    : "Create Room",
-  "googleLogin"   : "Sign in with Google",
-  "privacyPolicy" : "Select your account here. \nBy signing in, you agree to our privacy policy",
-  "ready"         : "Ready!",
-  "next"          : "Next",
-  "previous"      : "Prev",
-  "letsPlay"      : "Let's play?"
+  "app_name"              : "Phroneo",
+  "login"                 : "Login",
+  "create_room"           : "Create Room",
+  "login_google"          : "Sign in with Google",
+  "privacy_policy"        : "Select your account here. \nBy signing in, you agree to our privacy policy",
+  "ready"                 : "Ready!",
+  "next"                  : "Next",
+  "previous"              : "Prev",
+  "welcome_message"       : "Let's play?",
+  "create_match"          : "Create a match",
+  "join_match"            : "Join match",
+  "confirm_creation"      : "Create",
+  "player_count_question" : "How many players?",
+  "profile"               : "My profile",
+  "how_to_play"           : "How to play",
+  "exit"                  : "Log out"
 }
