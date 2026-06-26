@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/widgets/custom_outlined_button.dart';
 import 'package:phroneo/features/how_to_play/domain/entities/onboarding_page_data.dart';
@@ -75,7 +76,7 @@ class _HowToPlayPageState extends State<HowToPlayPage> {
           CustomElevatedButton(
             text: context.l10n.ready,
             onPressed: () {
-              context.go('/home');
+              context.goNamed(AppRoutes.home);
               },
           ) :
           CustomElevatedButton(

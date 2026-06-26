@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phroneo/core/router/app_routes.dart';
 
 import '../../../../l10n/app_localizations.dart';
 
@@ -35,14 +36,14 @@ class ProfileMenuBottomSheet extends StatelessWidget {
                 leading: const Icon(Icons.help_outline_outlined),
                 title: const Text('Como jogar'),
                 onTap: () {
-                  context.go('/onboarding');
+                  context.goNamed(AppRoutes.onboarding);
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.logout_outlined),
                 title: const Text('Sair'),
                 onTap: () {
-                  context.go('/');
+                  context.goNamed(AppRoutes.login);
                 },
               ),
             ],

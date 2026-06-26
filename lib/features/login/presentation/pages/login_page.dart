@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/theme/app_font_size.dart';
 import 'package:phroneo/core/theme/app_fonts.dart';
@@ -57,7 +58,7 @@ class LoginPage extends StatelessWidget {
                 filePath: 'assets/icons/google_icon.svg',
                 labelText: context.l10n.login_google,
                 onPressed: () {
-                  context.go('/onboarding');
+                  context.goNamed(AppRoutes.onboarding);
                 },
               ),
             ],

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phroneo/core/router/app_routes.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
@@ -119,7 +120,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
             CustomElevatedButton(
                 text: context.l10n.confirm_creation,
                 onPressed: () {
-                  context.go('/room_lobby');
+                  context.goNamed(AppRoutes.roomLobby);
                 }
             ),
           ],
