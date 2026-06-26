@@ -8,4 +8,5 @@ class AppColors {
   static const gray200        = Color(0xFFCECECE);
   static const gray100        = Color(0xFFE9E9E9);
   static const white          = Color(0xFFF2F2F2);
+  static const orange         = Color(0xFFE66B00);
 }

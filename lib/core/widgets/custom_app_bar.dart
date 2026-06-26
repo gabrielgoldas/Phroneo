@@ -6,32 +6,39 @@ import '../../../../core/theme/app_font_size.dart';
 import '../../features/login/presentation/widgets/profile_menu_bottom_sheet.dart';
 import '../theme/app_fonts.dart';
 
-class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showAccount;
+  final Color backgroundColor;
+  final Color textColor;
 
-  const CustomHeader({super.key, this.showAccount = false});
+  const CustomAppBar({
+    super.key,
+    this.showAccount = false,
+    this.backgroundColor = AppColors.background,
+    this.textColor = AppColors.primaryColor
+  });
 
   @override
   Widget build(BuildContext context) {
+    final color = textColor;
     return AppBar(
       actions: [
-        ?showAccount
-            ? IconButton(
-                icon: const Icon(Icons.account_circle),
-                onPressed: () =>
-                    ProfileMenuBottomSheet.showProfileMenuBottomSheet(context),
-              )
-            : null,
+        if (showAccount)
+          IconButton(
+              icon: const Icon(Icons.account_circle),
+              onPressed: () =>
+                  ProfileMenuBottomSheet.showProfileMenuBottomSheet(context),
+          ),
       ],
-      backgroundColor: AppColors.background,
+      backgroundColor: backgroundColor,
       centerTitle: true,
       title: Text(
         context.l10n.app_name,
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: AppFonts.cinzel,
           fontSize: AppFontSize.bodySmall,
           fontWeight: FontWeight.w500,
-          color: AppColors.primaryColor,
+          color: color,
         ),
       ),
     );

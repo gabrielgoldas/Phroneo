@@ -6,7 +6,7 @@ import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/theme/app_font_size.dart';
 import 'package:phroneo/core/theme/app_fonts.dart';
 import 'package:phroneo/core/utils/localization_build_context.dart';
-import 'package:phroneo/core/widgets/custom_header.dart';
+import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/features/home/presentation/widgets/custom_elevated_icon_button.dart';
 
 class LoginPage extends StatelessWidget {
@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CustomHeader(),
+      appBar: const CustomAppBar(),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),

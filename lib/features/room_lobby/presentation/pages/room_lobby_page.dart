@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
-import 'package:phroneo/core/widgets/custom_header.dart';
+import 'package:phroneo/core/widgets/custom_app_bar.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
@@ -13,7 +15,7 @@ class RoomLobbyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CustomHeader(),
+      appBar: const CustomAppBar(),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -51,7 +53,7 @@ class RoomLobbyPage extends StatelessWidget {
               
               CustomElevatedButton(
                   text: "Iniciar",
-                  onPressed: () {}
+                  onPressed: () => context.goNamed(AppRoutes.game)
               )
 
             ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
-import 'package:phroneo/core/widgets/custom_header.dart';
+import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/features/home/presentation/widgets/create_match_menu_bottom_sheet.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -20,7 +20,7 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomHeader(showAccount: true),
+      appBar: const CustomAppBar(showAccount: true),
       backgroundColor: AppColors.background,
       body: Center(
         child: Padding(

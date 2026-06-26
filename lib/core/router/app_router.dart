@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
+import 'package:phroneo/features/game/presentation/pages/game_page.dart';
 import 'package:phroneo/features/home/presentation/pages/home_page.dart';
 import 'package:phroneo/features/how_to_play/presentation/pages/how_to_play_page.dart';
 import 'package:phroneo/features/login/presentation/pages/login_page.dart';
@@ -26,6 +27,11 @@ final router = GoRouter(
           name: AppRoutes.roomLobby,
           path: '/room-lobby',
           builder: (context, state) => const RoomLobbyPage()
+      ),
+      GoRoute(
+          name: AppRoutes.game,
+          path: '/game',
+          builder: (context, state) => const GamePage()
       )
     ]
 );
