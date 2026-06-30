@@ -38,6 +38,7 @@ class _GamePage extends State<GamePage>{
         backgroundColor: Colors.transparent,
         appBar: const CustomAppBar(
           textColor: AppColors.background,
+          showBackButton: false,
           backgroundColor: Colors.transparent, // 3. Passamos transparente para a sua AppBar
         ),
         body: GestureDetector(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/utils/localization_build_context.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -10,12 +11,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showAccount;
   final Color backgroundColor;
   final Color textColor;
+  final bool showBackButton;
 
   const CustomAppBar({
     super.key,
     this.showAccount = false,
     this.backgroundColor = AppColors.background,
-    this.textColor = AppColors.primaryColor
+    this.textColor = AppColors.primaryColor,
+    this.showBackButton = true
   });
 
   @override
@@ -41,6 +44,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: color,
         ),
       ),
+      automaticallyImplyLeading: showBackButton,
+      leading: showBackButton
+          ? IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: AppColors.primaryColor,
+            size: 20,
+          ),
+          onPressed: () => context.pop()
+      ) : null,
     );
   }
 

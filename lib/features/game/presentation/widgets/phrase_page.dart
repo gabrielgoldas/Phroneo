@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:phroneo/core/router/app_routes.dart';
+import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
@@ -80,6 +83,13 @@ class PhrasePage extends StatelessWidget {
             ),
           ],
         ),
+
+        CustomElevatedButton(
+            text: 'Ordenar Escolhas',
+            backgroundColor: AppColors.background,
+            fontColor: AppColors.black,
+            onPressed: () => context.goNamed(AppRoutes.ordering)
+        )
       ],
     );
   }

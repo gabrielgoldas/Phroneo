@@ -20,7 +20,7 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(showAccount: true),
+      appBar: const CustomAppBar(showAccount: true, showBackButton: false),
       backgroundColor: AppColors.background,
       body: Center(
         child: Padding(
