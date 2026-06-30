@@ -3,20 +3,20 @@ import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/widgets/custom_outlined_button.dart';
-import 'package:phroneo/features/how_to_play/domain/entities/onboarding_page_data.dart';
-import 'package:phroneo/features/how_to_play/presentation/widgets/tutorial_page.dart';
+import 'package:phroneo/features/onboarding/domain/entities/onboarding_page_data.dart';
+import 'package:phroneo/features/onboarding/presentation/widgets/tutorial_page.dart';
 
 import '../../../../core/utils/localization_build_context.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 
-class HowToPlayPage extends StatefulWidget {
-  const HowToPlayPage({super.key});
+class Onboarding extends StatefulWidget {
+  const Onboarding({super.key});
 
   @override
-  State<HowToPlayPage> createState() => _HowToPlayPageState();
+  State<Onboarding> createState() => _OnboardingState();
 }
 
-class _HowToPlayPageState extends State<HowToPlayPage> {
+class _OnboardingState extends State<Onboarding> {
 
   final PageController _pageController = PageController();
 
@@ -72,6 +72,21 @@ class _HowToPlayPageState extends State<HowToPlayPage> {
 
           const SizedBox(height: 24),
 
+          (currentPage > 0) ?
+          CustomOutlinedButton(
+              text: context.l10n.previous,
+              onPressed: () {
+                if (currentPage > 0) {
+                  _pageController.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut
+                  );
+                }
+              }
+          )
+              :
+          const SizedBox.shrink(),
+
           currentPage == onboardingPages.length - 1 ?
           CustomElevatedButton(
             text: context.l10n.ready,
@@ -90,21 +105,6 @@ class _HowToPlayPageState extends State<HowToPlayPage> {
               }
             },
           ),
-
-          (currentPage > 0) ?
-            CustomOutlinedButton(
-              text: context.l10n.previous,
-              onPressed: () {
-                if (currentPage > 0) {
-                  _pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut
-                  );
-                }
-              }
-            )
-            :
-          const SizedBox.shrink(),
 
           const SizedBox(height: 32),
 

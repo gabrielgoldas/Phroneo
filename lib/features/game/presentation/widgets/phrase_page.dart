@@ -27,7 +27,7 @@ class PhrasePage extends StatelessWidget {
                 fontFamily: AppFonts.cormorantInfant,
                 fontWeight: FontWeight.w500,
                 fontSize: AppFontSize.bodyLarge,
-                color: AppColors.background,
+                color: AppColors.white,
               ),
             ),
 
@@ -40,7 +40,7 @@ class PhrasePage extends StatelessWidget {
                 fontFamily: AppFonts.cormorantInfant,
                 fontWeight: FontWeight.bold,
                 fontSize: AppFontSize.titleLargeX,
-                color: AppColors.background,
+                color: AppColors.white,
               ),
             ),
 
@@ -52,7 +52,7 @@ class PhrasePage extends StatelessWidget {
                 fontFamily: AppFonts.cormorantInfant,
                 fontWeight: FontWeight.w500,
                 fontSize: AppFontSize.titleSmall,
-                color: AppColors.background,
+                color: AppColors.white,
               ),
             ),
 
@@ -62,7 +62,7 @@ class PhrasePage extends StatelessWidget {
                 fontFamily: AppFonts.cormorantInfant,
                 fontWeight: FontWeight.w500,
                 fontSize: AppFontSize.titleSmall,
-                color: AppColors.background,
+                color: AppColors.white,
               ),
             ),
           ],
@@ -86,7 +86,7 @@ class PhrasePage extends StatelessWidget {
 
         CustomElevatedButton(
             text: 'Ordenar Escolhas',
-            backgroundColor: AppColors.background,
+            backgroundColor: AppColors.white,
             fontColor: AppColors.black,
             onPressed: () => context.goNamed(AppRoutes.ordering)
         )

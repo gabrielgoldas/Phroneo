@@ -14,6 +14,7 @@ class OrderingPage extends StatefulWidget {
 }
 
 class _OrderingPage extends State<OrderingPage> {
+  bool showNumbers = false;
   final _options = <Option>[
     Option(number: 72, color: AppColors.orange),
     Option(number: 50, color: AppColors.gray300),
@@ -110,7 +111,13 @@ class _OrderingPage extends State<OrderingPage> {
                             borderRadius: BorderRadius.circular(12.0)
                         ),
                         child: Text(
-                          option.number.toString(),
+                          showNumbers ? option.number.toString() : '',
+                          style: TextStyle(
+                            fontFamily: AppFonts.cinzel,
+                            color: AppColors.gray200,
+                            fontSize: AppFontSize.bodyLargeX,
+                            fontWeight: FontWeight.w900
+                          ),
                         ),
                       );
                     },
@@ -149,6 +156,8 @@ class _OrderingPage extends State<OrderingPage> {
                       ),
                     ),
                   );
+
+                  setState(() => showNumbers = true);
                 }
             )
 
