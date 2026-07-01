@@ -6,10 +6,12 @@ import '../theme/app_fonts.dart';
 
 class CustomOutlinedButton extends StatelessWidget {
   final String text;
+  final Color fontColor;
   final VoidCallback onPressed;
 
   const CustomOutlinedButton({
     super.key,
+    this.fontColor = AppColors.primaryColor,
     required this.text,
     required this.onPressed
   });
@@ -30,7 +32,7 @@ class CustomOutlinedButton extends StatelessWidget {
             fontFamily: AppFonts.cinzel,
             fontWeight: FontWeight.bold,
             fontSize: AppFontSize.bodySmall,
-            color: AppColors.primaryColor,
+            color: fontColor,
             decoration: TextDecoration.underline
         ),
       ),

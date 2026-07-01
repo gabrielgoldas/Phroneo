@@ -58,7 +58,7 @@ class LoginPage extends StatelessWidget {
                 filePath: 'assets/icons/google_icon.svg',
                 labelText: context.l10n.login_google,
                 onPressed: () {
-                  context.goNamed(AppRoutes.onboarding);
+                  context.pushNamed(AppRoutes.onboarding);
                 },
               ),
             ],

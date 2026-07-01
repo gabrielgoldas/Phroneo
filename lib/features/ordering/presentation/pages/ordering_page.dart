@@ -5,9 +5,10 @@ import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
+import '../widgets/round_result_dialog.dart';
 
 class OrderingPage extends StatefulWidget {
-  const OrderingPage({ super.key });
+  const OrderingPage({super.key});
 
   @override
   State<StatefulWidget> createState() => _OrderingPage();
@@ -15,6 +16,7 @@ class OrderingPage extends StatefulWidget {
 
 class _OrderingPage extends State<OrderingPage> {
   bool showNumbers = false;
+
   final _options = <Option>[
     Option(number: 72, color: AppColors.orange),
     Option(number: 50, color: AppColors.gray300),
@@ -32,7 +34,6 @@ class _OrderingPage extends State<OrderingPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: CustomAppBar(),
       backgroundColor: AppColors.background,
@@ -41,7 +42,6 @@ class _OrderingPage extends State<OrderingPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-
             const Text(
               'Coloque as cores do maior para o menor',
               textAlign: TextAlign.center,
@@ -75,27 +75,28 @@ class _OrderingPage extends State<OrderingPage> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: _options.length,
                     onReorderItem: _onReorder,
-                    proxyDecorator: (Widget child, int index, Animation<double> animation) {
-                      return AnimatedBuilder(
-                          animation: animation,
-                          builder: (BuildContext context, Widget? child) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black26,
-                                    blurRadius: 10,
-                                    offset: Offset(0, 5),
-                                  )
-                                ]
-                              ),
-                              child: child,
-                            );
-                          },
-                        child: child,
-                      );
-                    },
+                    proxyDecorator:
+                        (Widget child, int index, Animation<double> animation) {
+                          return AnimatedBuilder(
+                            animation: animation,
+                            builder: (BuildContext context, Widget? child) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 10,
+                                      offset: Offset(0, 5),
+                                    ),
+                                  ],
+                                ),
+                                child: child,
+                              );
+                            },
+                            child: child,
+                          );
+                        },
 
                     itemBuilder: (context, index) {
                       final option = _options[index];
@@ -107,8 +108,8 @@ class _OrderingPage extends State<OrderingPage> {
                         height: 60.0,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                            color: option.color,
-                            borderRadius: BorderRadius.circular(12.0)
+                          color: option.color,
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
                         child: Text(
                           showNumbers ? option.number.toString() : '',
@@ -116,7 +117,7 @@ class _OrderingPage extends State<OrderingPage> {
                             fontFamily: AppFonts.cinzel,
                             color: AppColors.gray200,
                             fontSize: AppFontSize.bodyLargeX,
-                            fontWeight: FontWeight.w900
+                            fontWeight: FontWeight.w900,
                           ),
                         ),
                       );
@@ -140,27 +141,25 @@ class _OrderingPage extends State<OrderingPage> {
             ),
 
             CustomElevatedButton(
-                text: "Concluído",
-                onPressed: () {
-                  final List<int> finalOpt = _options.map((option) => option.number).toList();
-                  final String stringFormatted = finalOpt.join(', ');
+              text: "Concluído",
+              onPressed: () {
+                setState(() => showNumbers = true);
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Ordem atual: $stringFormatted'),
-                      duration: const Duration(seconds: 4),
-                      behavior: SnackBarBehavior.floating,
-                      backgroundColor: Colors.black87,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  );
-
-                  setState(() => showNumbers = true);
-                }
-            )
-
+                showGeneralDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  barrierLabel: '',
+                  barrierColor: AppColors.bgTransparent,
+                  transitionDuration: const Duration(seconds: 1),
+                  pageBuilder: (_, _, _) {
+                    return const PopScope(
+                      canPop: false,
+                      child: RoundResultDialog(),
+                    );
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -172,8 +171,5 @@ class Option {
   final int number;
   final Color color;
 
-  const Option({
-    required this.number,
-    required this.color,
-  });
+  const Option({required this.number, required this.color});
 }

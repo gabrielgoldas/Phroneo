@@ -59,7 +59,7 @@ class RoomLobbyPage extends StatelessWidget {
 
                   CustomElevatedButton(
                       text: "Iniciar",
-                      onPressed: () => context.goNamed(AppRoutes.game)
+                      onPressed: () => context.pushNamed(AppRoutes.game)
                   )
                 ],
               )

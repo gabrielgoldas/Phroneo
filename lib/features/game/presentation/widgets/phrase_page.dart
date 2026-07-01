@@ -88,7 +88,7 @@ class PhrasePage extends StatelessWidget {
             text: 'Ordenar Escolhas',
             backgroundColor: AppColors.white,
             fontColor: AppColors.black,
-            onPressed: () => context.goNamed(AppRoutes.ordering)
+            onPressed: () => context.pushNamed(AppRoutes.ordering)
         )
       ],
     );

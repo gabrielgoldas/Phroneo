@@ -13,39 +13,31 @@ final router = GoRouter(
       name: AppRoutes.login,
       path: '/',
       builder: (context, state) => const LoginPage(),
-      routes: [
-        GoRoute(
-          name: AppRoutes.onboarding,
-          path: 'onboarding',
-          builder: (context, state) => const Onboarding(),
-        ),
-        GoRoute(
-          name: AppRoutes.home,
-          path: 'home',
-          builder: (context, state) => const HomePage(),
-          routes: [
-            GoRoute(
-              name: AppRoutes.roomLobby,
-              path: 'room-lobby',
-              builder: (context, state) => const RoomLobbyPage(),
-              routes: [
-                GoRoute(
-                  name: AppRoutes.game,
-                  path: 'game',
-                  builder: (context, state) => const GamePage(),
-                  routes: [
-                    GoRoute(
-                      name: AppRoutes.ordering,
-                      path: 'ordering',
-                      builder: (context, state) => const OrderingPage(),
-                    ),
-                  ]
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
     ),
+    GoRoute(
+      name: AppRoutes.onboarding,
+      path: '/onboarding',
+      builder: (context, state) => const Onboarding(),
+    ),
+    GoRoute(
+      name: AppRoutes.home,
+      path: '/home',
+      builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      name: AppRoutes.roomLobby,
+      path: '/room-lobby',
+      builder: (context, state) => const RoomLobbyPage(),
+    ),
+    GoRoute(
+      name: AppRoutes.game,
+      path: '/game',
+      builder: (context, state) => const GamePage(),
+    ),
+    GoRoute(
+      name: AppRoutes.ordering,
+      path: '/ordering',
+      builder: (context, state) => const OrderingPage(),
+    )
   ],
 );

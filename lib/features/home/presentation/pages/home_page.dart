@@ -47,7 +47,9 @@ class _HomePage extends State<HomePage> {
 
               CustomElevatedButton(
                   text: context.l10n.join_match,
-                  onPressed: () {}
+                  onPressed: () {
+                    // TODO -> Camera QR Code
+                  }
               ),
             ],
           ),

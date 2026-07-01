@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
+import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/core/widgets/custom_outlined_button.dart';
 import 'package:phroneo/features/onboarding/domain/entities/onboarding_page_data.dart';
 import 'package:phroneo/features/onboarding/presentation/widgets/tutorial_page.dart';
@@ -32,7 +33,7 @@ class _OnboardingState extends State<Onboarding> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-
+      appBar: const CustomAppBar(showBackButton: false),
       body: Column(
         children: [
 

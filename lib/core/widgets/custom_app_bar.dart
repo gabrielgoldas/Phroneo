@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/utils/localization_build_context.dart';
 
@@ -10,20 +11,20 @@ import '../theme/app_fonts.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showAccount;
   final Color backgroundColor;
-  final Color textColor;
+  final Color fontColor;
   final bool showBackButton;
 
   const CustomAppBar({
     super.key,
     this.showAccount = false,
     this.backgroundColor = AppColors.background,
-    this.textColor = AppColors.primaryColor,
+    this.fontColor = AppColors.primaryColor,
     this.showBackButton = true
   });
 
   @override
   Widget build(BuildContext context) {
-    final color = textColor;
+    final color = fontColor;
     return AppBar(
       actions: [
         if (showAccount)

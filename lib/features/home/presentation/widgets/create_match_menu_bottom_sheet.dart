@@ -120,7 +120,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
             CustomElevatedButton(
                 text: context.l10n.confirm_creation,
                 onPressed: () {
-                  context.goNamed(AppRoutes.roomLobby);
+                  context.pushNamed(AppRoutes.roomLobby);
                 }
             ),
           ],
