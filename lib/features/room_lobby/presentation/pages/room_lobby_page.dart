@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
+import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
 
@@ -13,6 +14,8 @@ class RoomLobbyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = context.l10n;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(),
@@ -28,7 +31,7 @@ class RoomLobbyPage extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    "Mostre o QR Code para seus amigos jogarem com você!",
+                    strings.shareQrCodeInstruction,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: AppFonts.cormorantInfant,
@@ -44,8 +47,8 @@ class RoomLobbyPage extends StatelessWidget {
 
               Column(
                 children: [
-                  const Text(
-                    "Todos leram o QR Code? \nSe sim, então vamos lá!",
+                  Text(
+                    strings.qrCodeConfirmationInstruction,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: AppFonts.cormorantInfant,
@@ -58,7 +61,7 @@ class RoomLobbyPage extends StatelessWidget {
                   const SizedBox(height: 24),
 
                   CustomElevatedButton(
-                      text: "Iniciar",
+                      text: strings.startButton,
                       onPressed: () => context.pushNamed(AppRoutes.game)
                   )
                 ],

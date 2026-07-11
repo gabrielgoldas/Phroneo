@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
+import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -21,7 +22,7 @@ class PhrasePage extends StatelessWidget {
         Column(
           children: [
             Text(
-              "Frase da rodada:",
+              context.l10n.roundPhrase,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: AppFonts.cormorantInfant,
@@ -72,7 +73,7 @@ class PhrasePage extends StatelessWidget {
           children: [
             SvgPicture.asset('assets/images/long_press.svg', width: 48),
             Text(
-              "Toque e segure para ver seu número",
+              context.l10n.tapAndHoldToSeeNumber,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: AppFonts.cormorantInfant,
@@ -85,7 +86,7 @@ class PhrasePage extends StatelessWidget {
         ),
 
         CustomElevatedButton(
-            text: 'Ordenar Escolhas',
+            text: context.l10n.sortChoices,
             backgroundColor: AppColors.white,
             fontColor: AppColors.black,
             onPressed: () => context.pushNamed(AppRoutes.ordering)

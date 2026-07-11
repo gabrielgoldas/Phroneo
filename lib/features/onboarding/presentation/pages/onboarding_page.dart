@@ -31,6 +31,8 @@ class _OnboardingState extends State<Onboarding> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = context.l10n;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(showBackButton: false),
@@ -75,7 +77,7 @@ class _OnboardingState extends State<Onboarding> {
 
           (currentPage > 0) ?
           CustomOutlinedButton(
-              text: context.l10n.previous,
+              text: strings.previous,
               onPressed: () {
                 if (currentPage > 0) {
                   _pageController.previousPage(
@@ -90,13 +92,13 @@ class _OnboardingState extends State<Onboarding> {
 
           currentPage == onboardingPages.length - 1 ?
           CustomElevatedButton(
-            text: context.l10n.ready,
+            text: strings.ready,
             onPressed: () {
               context.goNamed(AppRoutes.home);
               },
           ) :
           CustomElevatedButton(
-            text: context.l10n.next,
+            text: strings.next,
             onPressed: () {
               if (currentPage < onboardingPages.length - 1) {
                 _pageController.nextPage(

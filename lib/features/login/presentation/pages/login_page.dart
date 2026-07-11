@@ -14,6 +14,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = context.l10n;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(showBackButton: false),
@@ -28,7 +30,7 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 12),
 
               Text(
-                context.l10n.app_name,
+                strings.app_name,
                 style: TextStyle(
                   fontFamily: AppFonts.cinzel,
                   fontWeight: FontWeight.bold,
@@ -40,7 +42,7 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 54),
 
               Text(
-                context.l10n.privacy_policy,
+                strings.privacy_policy,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontFamily: AppFonts.cormorantInfant,

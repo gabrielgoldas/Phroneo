@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
+import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 
@@ -34,6 +35,8 @@ class _OrderingPage extends State<OrderingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = context.l10n;
+
     return Scaffold(
       appBar: CustomAppBar(),
       backgroundColor: AppColors.background,
@@ -42,8 +45,8 @@ class _OrderingPage extends State<OrderingPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Text(
-              'Coloque as cores do maior para o menor',
+            Text(
+              strings.sortChoicesInstruction,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: AppFonts.cinzel,
@@ -55,10 +58,10 @@ class _OrderingPage extends State<OrderingPage> {
 
             Column(
               children: [
-                const Align(
+                Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Maior número (100)',
+                    strings.highestNumberLabel,
                     style: TextStyle(
                       fontFamily: AppFonts.cinzel,
                       fontSize: AppFontSize.bodySmall,
@@ -125,10 +128,10 @@ class _OrderingPage extends State<OrderingPage> {
                   ),
                 ),
 
-                const Align(
+                Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Menor número (1)',
+                    strings.lowestNumberLabel,
                     style: TextStyle(
                       fontFamily: AppFonts.cinzel,
                       fontSize: AppFontSize.bodySmall,
@@ -141,7 +144,7 @@ class _OrderingPage extends State<OrderingPage> {
             ),
 
             CustomElevatedButton(
-              text: "Concluído",
+              text: strings.doneButton,
               onPressed: () {
                 setState(() => showNumbers = true);
 

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/theme/app_font_size.dart';
 import 'package:phroneo/core/theme/app_fonts.dart';
+import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
@@ -15,6 +16,7 @@ class RoundResultDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = context.l10n;
     bool winner = true;
 
     return Scaffold(
@@ -37,7 +39,7 @@ class RoundResultDialog extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    winner ? 'Parabéns' : 'Que pena',
+                    winner ? strings.congratulationsTitle : strings.tooBadTitle,
                     style: TextStyle(
                         fontFamily: AppFonts.cinzel,
                         fontSize: AppFontSize.bodyLarge,
@@ -46,7 +48,7 @@ class RoundResultDialog extends StatelessWidget {
                   ),
 
                   Text(
-                    winner ? 'Vocês Venceram!' : 'Vocês Perderam!',
+                    winner ? strings.victoryMessage : strings.defeatMessage,
                     style: TextStyle(
                         fontFamily: AppFonts.cinzel,
                         fontSize: AppFontSize.titleLarge,
@@ -74,13 +76,13 @@ class RoundResultDialog extends StatelessWidget {
                 children: [
 
                   CustomOutlinedButton(
-                      text: 'Sair',
+                      text: strings.exit,
                       fontColor: AppColors.background,
                       onPressed: () => context.goNamed(AppRoutes.home)
                   ),
 
                   CustomElevatedButton(
-                      text: 'Nova Rodada',
+                      text: strings.newRoundButton,
                       backgroundColor: AppColors.background,
                       fontColor: AppColors.black,
                       onPressed: () => context.goNamed(AppRoutes.roomLobby)

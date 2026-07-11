@@ -55,4 +55,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exit => 'Log out';
+
+  @override
+  String get yourNumberIs => 'Your number is:';
+
+  @override
+  String get roundPhrase => 'Round phrase:';
+
+  @override
+  String get tapAndHoldToSeeNumber => 'Tap and hold to see your number';
+
+  @override
+  String get sortChoices => 'Sort choices';
+
+  @override
+  String get sortChoicesInstruction => 'Sort the colors according to the imagined number. \nThe numbers must be from highest to lowest.';
+
+  @override
+  String get highestNumberLabel => 'Highest number (100)';
+
+  @override
+  String get lowestNumberLabel => 'Lowest number (1)';
+
+  @override
+  String get doneButton => 'Done';
+
+  @override
+  String get newRoundButton => 'New Round';
+
+  @override
+  String get victoryMessage => 'You Won!';
+
+  @override
+  String get defeatMessage => 'You Lost!';
+
+  @override
+  String get congratulationsTitle => 'Congratulations';
+
+  @override
+  String get tooBadTitle => 'Too bad';
+
+  @override
+  String get startButton => 'Start';
+
+  @override
+  String get qrCodeConfirmationInstruction => 'Has everyone scanned the QR Code? \nIf so, let\'s go!';
+
+  @override
+  String get shareQrCodeInstruction => 'Show the QR Code to your friends so they can play with you!';
 }

@@ -48,6 +48,8 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = context.l10n;
+
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.all(24.00),
@@ -56,7 +58,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              context.l10n.create_match,
+              strings.create_match,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: AppFontSize.titleMedium,
@@ -69,7 +71,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
             const SizedBox(height: 24),
 
             Text(
-              context.l10n.player_count_question,
+              strings.player_count_question,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: AppFontSize.titleSmall,
@@ -118,7 +120,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
             const SizedBox(height: 18),
 
             CustomElevatedButton(
-                text: context.l10n.confirm_creation,
+                text: strings.confirm_creation,
                 onPressed: () {
                   context.pushNamed(AppRoutes.roomLobby);
                 }

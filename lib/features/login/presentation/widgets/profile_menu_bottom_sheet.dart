@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
+import 'package:phroneo/core/utils/localization_build_context.dart';
 
 class ProfileMenuBottomSheet extends StatelessWidget {
   const ProfileMenuBottomSheet({super.key});
@@ -14,6 +15,8 @@ class ProfileMenuBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = context.l10n;
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -25,25 +28,25 @@ class ProfileMenuBottomSheet extends StatelessWidget {
             tiles: [
               ListTile(
                 leading: const Icon(Icons.person),
-                title: const Text('Meu perfil'),
+                title: Text(strings.profile),
                 onTap: () {},
               ),
               ListTile(
                 leading: const Icon(Icons.help_outline_outlined),
-                title: const Text('Como jogar'),
+                title: Text(strings.how_to_play),
                 onTap: () {
                   context.goNamed(AppRoutes.onboarding);
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.logout_outlined),
-                title: const Text('Sair'),
+                title: Text(strings.exit),
                 onTap: () {
                   context.goNamed(AppRoutes.login);
                 },
               ),
             ],
-          ).toList(), // Precisa do .toList() no final!
+          ).toList(),
         ),
       ),
     );
