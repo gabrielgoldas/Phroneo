@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "815507514637",
+    "project_id": "phroneo-9f732",
+    "storage_bucket": "phroneo-9f732.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815507514637:android:e80b8698dc706ba171bc44",
+        "android_client_info": {
+          "package_name": "com.gabrielgoldas.phroneo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815507514637-k6u3jef3sjbckrekgs28vq90t4qoqlbn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gabrielgoldas.phroneo",
+            "certificate_hash": "e1bd9fce30eb129570a57ccec0e831da79f036b9"
+          }
+        },
+        {
+          "client_id": "815507514637-12lquu7vdbd046om3pmhf2kk2qbmcd71.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLr8Z_PFmgviVY9R_uppyfa7n0fZUfFII"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815507514637-12lquu7vdbd046om3pmhf2kk2qbmcd71.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "815507514637-8r31g489m8sr6mr5mmcp19pldl8pokh2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gabrielgoldas.phroneo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

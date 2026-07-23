@@ -6,11 +6,15 @@ import '../theme/app_fonts.dart';
 class CustomElevatedButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final Color backgroundColor;
+  final Color fontColor;
 
   const CustomElevatedButton({
     super.key,
+    this.backgroundColor = AppColors.primaryColor,
+    this.fontColor = AppColors.background,
     required this.text,
-    required this.onPressed
+    required this.onPressed,
   });
 
   @override
@@ -18,7 +22,7 @@ class CustomElevatedButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: backgroundColor,
         foregroundColor: Colors.white,
       ),
       child: Text(
@@ -26,7 +30,7 @@ class CustomElevatedButton extends StatelessWidget {
         style: TextStyle(
             fontFamily: AppFonts.cinzel,
             fontWeight: FontWeight.bold,
-            color: AppColors.background
+            color: fontColor
         ),
       ),
     );

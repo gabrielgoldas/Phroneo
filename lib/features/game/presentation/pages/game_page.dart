@@ -37,8 +37,9 @@ class _GamePage extends State<GamePage>{
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: const CustomAppBar(
-          textColor: AppColors.background,
-          backgroundColor: Colors.transparent, // 3. Passamos transparente para a sua AppBar
+          fontColor: AppColors.background,
+          showBackButton: false,
+          backgroundColor: Colors.transparent,
         ),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,

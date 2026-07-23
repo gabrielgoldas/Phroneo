@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:phroneo/core/utils/localization_build_context.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
@@ -14,7 +15,7 @@ class NumberPage extends StatelessWidget {
       children: [
 
         Text(
-          "Seu número é:",
+          context.l10n.yourNumberIs,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: AppFonts.cormorantInfant,

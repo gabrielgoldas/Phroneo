@@ -55,4 +55,52 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get exit => 'Sair';
+
+  @override
+  String get yourNumberIs => 'Seu número é:';
+
+  @override
+  String get roundPhrase => 'Frase da rodada:';
+
+  @override
+  String get tapAndHoldToSeeNumber => 'Toque e segure para ver seu número';
+
+  @override
+  String get sortChoices => 'Ordenar Escolhas';
+
+  @override
+  String get sortChoicesInstruction => 'Ordene as cores conforme o número imaginado. \nOs Números devem estar do maior para o menor.';
+
+  @override
+  String get highestNumberLabel => 'Maior número (100)';
+
+  @override
+  String get lowestNumberLabel => 'Menor número (1)';
+
+  @override
+  String get doneButton => 'Concluído';
+
+  @override
+  String get newRoundButton => 'Nova Rodada';
+
+  @override
+  String get victoryMessage => 'Vocês Venceram!';
+
+  @override
+  String get defeatMessage => 'Vocês Perderam!';
+
+  @override
+  String get congratulationsTitle => 'Parabéns';
+
+  @override
+  String get tooBadTitle => 'Que pena';
+
+  @override
+  String get startButton => 'Iniciar';
+
+  @override
+  String get qrCodeConfirmationInstruction => 'Todos leram o QR Code? \nSe sim, então vamos lá!';
+
+  @override
+  String get shareQrCodeInstruction => 'Mostre o QR Code para seus amigos jogarem com você!';
 }

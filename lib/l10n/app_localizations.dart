@@ -190,6 +190,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Log out'**
   String get exit;
+
+  /// No description provided for @yourNumberIs.
+  ///
+  /// In en, this message translates to:
+  /// **'Your number is:'**
+  String get yourNumberIs;
+
+  /// No description provided for @roundPhrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Round phrase:'**
+  String get roundPhrase;
+
+  /// No description provided for @tapAndHoldToSeeNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap and hold to see your number'**
+  String get tapAndHoldToSeeNumber;
+
+  /// No description provided for @sortChoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort choices'**
+  String get sortChoices;
+
+  /// No description provided for @sortChoicesInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort the colors according to the imagined number. \nThe numbers must be from highest to lowest.'**
+  String get sortChoicesInstruction;
+
+  /// No description provided for @highestNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest number (100)'**
+  String get highestNumberLabel;
+
+  /// No description provided for @lowestNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Lowest number (1)'**
+  String get lowestNumberLabel;
+
+  /// No description provided for @doneButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get doneButton;
+
+  /// No description provided for @newRoundButton.
+  ///
+  /// In en, this message translates to:
+  /// **'New Round'**
+  String get newRoundButton;
+
+  /// No description provided for @victoryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You Won!'**
+  String get victoryMessage;
+
+  /// No description provided for @defeatMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You Lost!'**
+  String get defeatMessage;
+
+  /// No description provided for @congratulationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations'**
+  String get congratulationsTitle;
+
+  /// No description provided for @tooBadTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Too bad'**
+  String get tooBadTitle;
+
+  /// No description provided for @startButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get startButton;
+
+  /// No description provided for @qrCodeConfirmationInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Has everyone scanned the QR Code? \nIf so, let\'s go!'**
+  String get qrCodeConfirmationInstruction;
+
+  /// No description provided for @shareQrCodeInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the QR Code to your friends so they can play with you!'**
+  String get shareQrCodeInstruction;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
