@@ -1,15 +1,33 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:phroneo/l10n/app_localizations.dart';
 
+import 'core/di/injection.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_colors.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(const PhroneoApp());
+void main() async {
+  // Prepare Flutter before using plugins
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Connecting app to Firebase project
+  await Firebase.initializeApp(
+    // Use the correct config
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  setupDependencies();
+
+  runApp(PhroneoApp());
 }
 
 class PhroneoApp extends StatelessWidget {
-  const PhroneoApp({super.key});
+  PhroneoApp({super.key});
+
+  final authController = getIt<AuthController>();
+  late final router = createRouter(authController);
 
   @override
   Widget build(BuildContext context) {

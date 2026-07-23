@@ -6,24 +6,27 @@ class AuthService {
   
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<String?> signWithGoogle() async {
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
+
+  Future<String?> signInWithGoogle() async {
 
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+      final GoogleSignIn googleSignIn = GoogleSignIn();
 
-      await googleSignIn.initialize();
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-      final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
 
-      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
-
+      // Create a new credential
       final AuthCredential credential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
-
-      return userCredential.user?.uid;
+      // Once signed in, return the UserCredential
+      await _auth.signInWithCredential(credential);
       
     } on FirebaseAuthException catch (e) {
       if (kDebugMode) {
@@ -36,5 +39,6 @@ class AuthService {
       }
       rethrow;
     }
+    return null;
   }
 }
