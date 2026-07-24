@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -11,11 +12,13 @@ void setupDependencies() {
   // Registers external packages first
   getIt.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
+  getIt.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
 
   getIt.registerLazySingleton<AuthService>(
       () => AuthService(
           firebaseAuth: getIt<FirebaseAuth>(),
-          googleSignIn: getIt<GoogleSignIn>()
+          googleSignIn: getIt<GoogleSignIn>(),
+          firestore: getIt<FirebaseFirestore>()
       )
   );
 

@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                           filePath: 'assets/icons/google_icon.svg',
                           labelText: context.l10n.login_google,
                           onPressed: () {
-                            controller.login();
+                            controller.login(context);
                           },
                         ),
                       ],
