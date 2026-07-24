@@ -3,21 +3,30 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthService {
-  
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final FirebaseAuth _auth;
+  final GoogleSignIn _googleSignIn;
+
+  AuthService({
+    required FirebaseAuth firebaseAuth,
+    required this._googleSignIn,
+  }) : _auth = firebaseAuth;
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   Future<String?> signInWithGoogle() async {
 
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
 
       // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+
+      // If user cancel login, return null
+      if (googleUser == null) return null;
 
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
       // Create a new credential
       final AuthCredential credential = GoogleAuthProvider.credential(
@@ -29,16 +38,29 @@ class AuthService {
       await _auth.signInWithCredential(credential);
       
     } on FirebaseAuthException catch (e) {
-      if (kDebugMode) {
-        print(e.message);
-      }
+      if (kDebugMode) print(e.message);
       rethrow;
     } catch (e) {
-      if (kDebugMode) {
-        print('Google Sign In error: $e');
-      }
+      if (kDebugMode) print('Google Sign In error: $e');
       rethrow;
     }
     return null;
+  }
+
+  Future<void> signOutFromGoogle() async {
+    try {
+      await _auth.signOut();
+
+      // Checks and logs out of Google
+      if (await _googleSignIn.isSignedIn()) {
+        // Disconnect revokes the token and forces account selection at the next login.
+        await _googleSignIn.disconnect();
+      }
+
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
   }
 }

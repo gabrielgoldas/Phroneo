@@ -31,7 +31,22 @@ class AuthController extends ChangeNotifier {
 
     try {
       await _authService.signInWithGoogle();
+    } catch(e){
+      if(e is FirebaseAuthException){
+        ShowMessage(title: 'Error', message: e.message!,);
+      }
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
 
+  Future<void> logout() async {
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      await _authService.signOutFromGoogle();
     } catch(e){
       if(e is FirebaseAuthException){
         ShowMessage(title: 'Error', message: e.message!,);
