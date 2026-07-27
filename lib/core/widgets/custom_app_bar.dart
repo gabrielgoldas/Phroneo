@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/core/utils/localization_build_context.dart';
+import 'package:phroneo/features/auth/service/auth_service.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
@@ -24,11 +26,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final color = fontColor;
+    final authService = getIt<AuthService>();
+    final String? photoUrl = authService.currentUser?.photoURL;
+
     return AppBar(
       actions: [
         if (showAccount)
           IconButton(
-              icon: const Icon(Icons.account_circle),
+              icon: photoUrl != null
+                  ? CircleAvatar(backgroundImage: NetworkImage(photoUrl), radius: 12)
+                  : const Icon(Icons.account_circle),
               onPressed: () =>
                   ProfileMenuBottomSheet.showProfileMenuBottomSheet(context),
           ),

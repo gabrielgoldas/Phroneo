@@ -18,6 +18,7 @@ class AuthService {
   }) : _auth = firebaseAuth;
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
+  User? get currentUser => _auth.currentUser;
 
   Future<bool?> signInWithGoogle() async {
     try {
