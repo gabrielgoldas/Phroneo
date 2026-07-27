@@ -42,7 +42,10 @@ GoRouter createRouter(AuthController authController) {
       GoRoute(
         name: AppRoutes.roomLobby,
         path: '/room-lobby',
-        builder: (context, state) => const RoomLobbyPage(),
+        builder: (context, state) {
+          final roomCode = state.extra as String;
+          return RoomLobbyPage( roomCode: roomCode );
+        },
       ),
       GoRoute(
         name: AppRoutes.game,

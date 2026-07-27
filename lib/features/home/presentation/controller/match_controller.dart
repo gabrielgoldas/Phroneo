@@ -18,10 +18,10 @@ class MatchController extends ChangeNotifier {
 
     try {
 
-      final matchUid = await _matchService.createMatch();
+      final roomCode = await _matchService.createMatch();
 
-      if ( matchUid != null ) {
-        context.pushNamed(AppRoutes.roomLobby);
+      if ( roomCode != null ) {
+        context.pushNamed(AppRoutes.roomLobby, extra: roomCode);
       } else {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(

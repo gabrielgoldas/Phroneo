@@ -4,13 +4,16 @@ import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
 
 class RoomLobbyPage extends StatelessWidget {
-  const RoomLobbyPage({super.key});
+  final String roomCode;
+
+  const RoomLobbyPage({ super.key, required this.roomCode });
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +31,44 @@ class RoomLobbyPage extends StatelessWidget {
 
               const SizedBox.shrink(),
 
+              Text(
+                strings.shareQrCodeInstruction,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: AppFonts.cormorantInfant,
+                  fontWeight: FontWeight.bold,
+                  fontSize: AppFontSize.titleLarge,
+                  color: AppColors.black,
+                ),
+              ),
+
               Column(
                 children: [
-                  Text(
-                    strings.shareQrCodeInstruction,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: AppFonts.cormorantInfant,
-                      fontWeight: FontWeight.bold,
-                      fontSize: AppFontSize.titleLarge,
-                      color: AppColors.black,
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundClearer,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: QrImageView(
+                      data: roomCode,
+                      version: QrVersions.auto, // Calcula automaticamente a densidade do QR
+                      size: 180.0,
                     ),
                   ),
 
-                  Image.asset('assets/images/qr_code.png', width: 180),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    child: Text(
+                      roomCode,
+                      style: const TextStyle(
+                        fontFamily: AppFonts.cormorantInfant,
+                        fontWeight: FontWeight.bold,
+                        fontSize: AppFontSize.titleSmall,
+                        color: AppColors.black,
+                      ),
+                    ),
+                  ),
                 ],
               ),
 
