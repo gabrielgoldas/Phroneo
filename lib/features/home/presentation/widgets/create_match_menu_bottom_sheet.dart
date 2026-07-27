@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:phroneo/core/router/app_routes.dart';
+import 'package:phroneo/core/di/injection.dart';
+import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
@@ -25,8 +25,15 @@ class CreateMatchMenuBottomSheet extends StatefulWidget {
 }
 
 class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
-  int selectedPlayers = 2;
+  late final MatchController matchController;
+  int selectedPlayers = 3;
   Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    matchController = getIt<MatchController>();
+  }
 
   void startIncrement() {
     _timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
@@ -38,7 +45,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
 
   void startDecrement() {
     _timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
-      if (selectedPlayers > 2) {
+      if (selectedPlayers > 3) {
         setState(() => selectedPlayers--);
       }
     });
@@ -50,7 +57,9 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
   Widget build(BuildContext context) {
     final strings = context.l10n;
 
-    return SafeArea(
+    return matchController.isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : SafeArea(
       child: Padding(
         padding: EdgeInsets.all(24.00),
         child: Column(
@@ -89,7 +98,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
                   onLongPressStart: (_) => startDecrement(),
                   onLongPressEnd: (_) => stop(),
                   child: IconButton(
-                    onPressed: selectedPlayers > 2
+                    onPressed: selectedPlayers > 3
                         ? () => setState(() => selectedPlayers--)
                         : null,
                     icon: const Icon(Icons.remove),
@@ -122,7 +131,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
             CustomElevatedButton(
                 text: strings.confirm_creation,
                 onPressed: () {
-                  context.pushNamed(AppRoutes.roomLobby);
+                  matchController.createMatch(context);
                 }
             ),
           ],

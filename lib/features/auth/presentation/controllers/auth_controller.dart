@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/features/auth/service/auth_service.dart';
@@ -17,7 +16,6 @@ class AuthController extends ChangeNotifier {
   User? user;
 
   late StreamSubscription<User?> _subscription;
-
 
   AuthController({required this._authService}) {
     _authService.authStateChanges.listen((firebaseUser) {
