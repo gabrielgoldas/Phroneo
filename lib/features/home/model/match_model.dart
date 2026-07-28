@@ -9,6 +9,7 @@ class MatchModel {
   final int maxPlayers;
   final PhraseModel currentPhrase;
   final List<int> secretNumbers;
+  final List<int> playerColors;
   final int wins;
   final int defeats;
   final StatusMatch status; // lobby, playing, finished
@@ -21,6 +22,7 @@ class MatchModel {
     required this.maxPlayers,
     required this.currentPhrase,
     required this.secretNumbers,
+    required this.playerColors,
     this.wins = 0,
     this.defeats = 0,
     this.status = StatusMatch.lobby
@@ -32,7 +34,8 @@ class MatchModel {
       'playersIds': playersIds,
       'numberOfPlayers': maxPlayers,
       'currentPhrase': currentPhrase.toMap(),
-      'playersNumbers': secretNumbers,
+      'secretNumbers': secretNumbers,
+      'playerColors': playerColors,
       'wins': wins,
       'defeats': defeats,
       'status': status.name,
@@ -55,7 +58,8 @@ class MatchModel {
       playersIds: List<String>.from(data['playersIds'] ?? []),
       maxPlayers: data['numberOfPlayers'] ?? 1,
       currentPhrase: PhraseModel.fromMap(data['currentPhrase'] ?? {}),
-      secretNumbers: List<int>.from(data['playersNumbers'] ?? []),
+      secretNumbers: List<int>.from(data['secretNumbers'] ?? []),
+      playerColors: List<int>.from(data['playerColors'] ?? []),
       wins: data['wins'] ?? 0,
       defeats: data['defeats'] ?? 0,
       status: getStatus(data['status'] ?? 'lobby'),

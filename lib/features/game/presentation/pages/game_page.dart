@@ -18,7 +18,6 @@ class _GamePage extends State<GamePage> {
   late final MatchController matchController;
 
   bool showNumberPage = false;
-  final Color color = AppColors.orange;
 
   void togglePageToShow() {
     setState(() {
@@ -34,9 +33,11 @@ class _GamePage extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
+    final myColor = Color(matchController.getMyColor());
+
     final backgroundColor = showNumberPage
-        ? HSLColor.fromColor(color).withLightness(0.35).toColor()
-        : color;
+        ? HSLColor.fromColor(myColor).withLightness(0.35).toColor()
+        : myColor;
 
     const transitionDuration = Duration(milliseconds: 500);
 

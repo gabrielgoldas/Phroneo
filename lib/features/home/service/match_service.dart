@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:phroneo/core/constants.dart';
+import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/features/home/model/match_model.dart';
 import 'package:phroneo/features/home/model/phrase_model.dart';
 
@@ -47,7 +49,8 @@ class MatchService {
           playersIds: [ user.uid ],
           maxPlayers: selectedPlayers,
           currentPhrase: initialPhrase,
-          secretNumbers: _generatePlayersNumbers(selectedPlayers)
+          secretNumbers: _generatePlayerNumbers(selectedPlayers), 
+          playerColors: _getPlayerColors(selectedPlayers)
       );
 
       await _firestore
@@ -77,12 +80,20 @@ class MatchService {
     });
   }
 
-  List<int> _generatePlayersNumbers(int maxNumberOfPlayers) {
+  List<int> _generatePlayerNumbers(int maxNumberOfPlayers) {
     final random                = Random();
     final int limit             = maxNumberOfPlayers.clamp(1, 100);
     final List<int> allNumbers  = List.generate(100, (index) => index + 1);
     allNumbers.shuffle(random);
     return allNumbers.take(limit).toList();
+  }
+
+  List<int> _getPlayerColors(int maxNumberOfPlayers) {
+    final random = Random();
+    final listCopy = List<int>.from(AppColors.playerPaletteValues);
+    listCopy.shuffle(random);
+    final limit = maxNumberOfPlayers.clamp(1, listCopy.length);
+    return listCopy.take(limit).toList();
   }
 
   Future<bool> joinMatch(String roomCode) async {
@@ -110,6 +121,35 @@ class MatchService {
         print('Erro ao buscar sala: $e');
       }
       return false;
+    }
+  }
+
+  Future<void> updateMatchResult(String roomCode, bool isVictory) async {
+    try {
+
+      await _firestore.collection('matches').doc(roomCode).update({
+        'status': StatusMatch.finished.name,
+        if (isVictory) 'wins': FieldValue.increment(1) else 'defeats': FieldValue.increment(1)
+      });
+
+    } catch (e) {
+      if (kDebugMode) {
+        print('Erro ao atualizar partida: $e');
+      }
+    }
+  }
+
+  Future<void> updateStatusMatch(String roomCode, StatusMatch status) async {
+    try {
+
+      await _firestore.collection('matches').doc(roomCode).update({
+        'status': status.name,
+      });
+
+    } catch (e) {
+      if (kDebugMode) {
+        print('Erro ao atualizar partida: $e');
+      }
     }
   }
 }

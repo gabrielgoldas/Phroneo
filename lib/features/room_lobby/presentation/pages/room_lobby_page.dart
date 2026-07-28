@@ -121,7 +121,11 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
                       if (matchController.allPlayersJoinMatch())
                         CustomElevatedButton(
                           text: strings.startButton,
-                          onPressed: () => context.pushNamed(AppRoutes.game),
+                          onPressed: () async {
+                            await matchController.startMatch();
+                            if (!context.mounted) return;
+                            context.pushNamed(AppRoutes.game);
+                          },
                         ),
                     ],
                   ),

@@ -12,12 +12,13 @@ import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/custom_outlined_button.dart';
 
 class RoundResultDialog extends StatelessWidget {
-  const RoundResultDialog({ super.key });
+  final bool everyoneWon;
+
+  const RoundResultDialog({ super.key, required this.everyoneWon });
 
   @override
   Widget build(BuildContext context) {
     final strings = context.l10n;
-    bool winner = true;
 
     return Scaffold(
       appBar: const CustomAppBar(
@@ -39,7 +40,7 @@ class RoundResultDialog extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    winner ? strings.congratulationsTitle : strings.tooBadTitle,
+                    everyoneWon ? strings.congratulationsTitle : strings.tooBadTitle,
                     style: TextStyle(
                         fontFamily: AppFonts.cinzel,
                         fontSize: AppFontSize.bodyLarge,
@@ -48,7 +49,7 @@ class RoundResultDialog extends StatelessWidget {
                   ),
 
                   Text(
-                    winner ? strings.victoryMessage : strings.defeatMessage,
+                    everyoneWon ? strings.victoryMessage : strings.defeatMessage,
                     style: TextStyle(
                         fontFamily: AppFonts.cinzel,
                         fontSize: AppFontSize.titleLarge,
@@ -58,7 +59,7 @@ class RoundResultDialog extends StatelessWidget {
 
                   const SizedBox(height: 24.0),
 
-                  winner
+                  everyoneWon
                   ? SvgPicture.asset(
                       'assets/images/logo_phroneo_white.svg',
                       width: 180,
