@@ -26,7 +26,7 @@ class CreateMatchMenuBottomSheet extends StatefulWidget {
 
 class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
   late final MatchController matchController;
-  int selectedPlayers = 3;
+  int selectedPlayers = 2;
   Timer? _timer;
 
   @override
@@ -45,7 +45,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
 
   void startDecrement() {
     _timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
-      if (selectedPlayers > 3) {
+      if (selectedPlayers > 2) {
         setState(() => selectedPlayers--);
       }
     });
@@ -98,7 +98,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
                   onLongPressStart: (_) => startDecrement(),
                   onLongPressEnd: (_) => stop(),
                   child: IconButton(
-                    onPressed: selectedPlayers > 3
+                    onPressed: selectedPlayers > 2
                         ? () => setState(() => selectedPlayers--)
                         : null,
                     icon: const Icon(Icons.remove),

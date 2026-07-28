@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phroneo/core/model/phrase_model.dart';
+import 'package:phroneo/features/home/model/phrase_model.dart';
 import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
@@ -12,8 +12,13 @@ import '../../../../core/theme/app_fonts.dart';
 
 class PhrasePage extends StatelessWidget {
   final PhraseModel phrase;
+  final bool isHost;
 
-  const PhrasePage({ super.key, required this.phrase });
+  const PhrasePage({
+    super.key,
+    required this.phrase,
+    required this.isHost
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +93,7 @@ class PhrasePage extends StatelessWidget {
           ],
         ),
 
+        if (isHost)
         CustomElevatedButton(
             text: context.l10n.sortChoices,
             backgroundColor: AppColors.white,

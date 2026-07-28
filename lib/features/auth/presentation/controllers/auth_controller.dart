@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:phroneo/features/auth/service/auth_service.dart';
 
 import '../../../../core/router/app_routes.dart';
-import '../../../components/show_message.dart';
+import '../../../../core/widgets/show_message.dart';
 
 class AuthController extends ChangeNotifier {
 

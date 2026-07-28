@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:phroneo/core/constants.dart';
-import 'package:phroneo/core/model/phrase_model.dart';
+import 'package:phroneo/features/home/model/phrase_model.dart';
 
 class MatchModel {
   final String id; // used to QR Code
   final String hostId;
   final List<String> playersIds;
-  final int numberOfPlayers;
+  final int maxPlayers;
   final PhraseModel currentPhrase;
   final List<int> secretNumbers;
   final int wins;
@@ -18,7 +18,7 @@ class MatchModel {
     required this.id,
     required this.hostId,
     required this.playersIds,
-    required this.numberOfPlayers,
+    required this.maxPlayers,
     required this.currentPhrase,
     required this.secretNumbers,
     this.wins = 0,
@@ -30,7 +30,7 @@ class MatchModel {
     return {
       'hostId': hostId,
       'playersIds': playersIds,
-      'numberOfPlayers': numberOfPlayers,
+      'numberOfPlayers': maxPlayers,
       'currentPhrase': currentPhrase.toMap(),
       'playersNumbers': secretNumbers,
       'wins': wins,
@@ -53,7 +53,7 @@ class MatchModel {
       id: snapshot.id, // O ID é o código da sala
       hostId: data['hostId'] ?? '',
       playersIds: List<String>.from(data['playersIds'] ?? []),
-      numberOfPlayers: data['numberOfPlayers'] ?? 1,
+      maxPlayers: data['numberOfPlayers'] ?? 1,
       currentPhrase: PhraseModel.fromMap(data['currentPhrase'] ?? {}),
       secretNumbers: List<int>.from(data['playersNumbers'] ?? []),
       wins: data['wins'] ?? 0,

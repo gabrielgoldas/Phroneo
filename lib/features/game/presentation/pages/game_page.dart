@@ -16,6 +16,7 @@ class GamePage extends StatefulWidget {
 
 class _GamePage extends State<GamePage> {
   late final MatchController matchController;
+
   bool showNumberPage = false;
   final Color color = AppColors.orange;
 
@@ -79,7 +80,8 @@ class _GamePage extends State<GamePage> {
                           )
                           : PhrasePage(
                               key: ValueKey('phrase_page'),
-                              phrase: matchController.currentMatch!.currentPhrase
+                              phrase: matchController.currentMatch!.currentPhrase,
+                              isHost: matchController.isHost,
                           ),
                     );
                   },

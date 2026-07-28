@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:phroneo/core/model/match_model.dart';
-import 'package:phroneo/core/model/phrase_model.dart';
+import 'package:phroneo/features/home/model/match_model.dart';
+import 'package:phroneo/features/home/model/phrase_model.dart';
 
 import '../../auth/service/auth_service.dart';
 
@@ -12,7 +12,6 @@ class MatchService {
 
   final AuthService _authService;
   final FirebaseFirestore _firestore;
-  MatchModel? currentMatch;
 
   MatchService({
     required this._authService,
@@ -33,7 +32,8 @@ class MatchService {
       final user = _authService.currentUser;
       if (user == null) return null;
 
-      final roomCode = _generateRoomCode();
+      // final roomCode = _generateRoomCode(); TODO -> DESCOMENTAR
+      final roomCode = 'LHY9PV';
 
       final initialPhrase = PhraseModel(
         text: 'O que você levaria para uma ilha deserta?',
@@ -45,7 +45,7 @@ class MatchService {
           id: roomCode,
           hostId: user.uid,
           playersIds: [ user.uid ],
-          numberOfPlayers: selectedPlayers,
+          maxPlayers: selectedPlayers,
           currentPhrase: initialPhrase,
           secretNumbers: _generatePlayersNumbers(selectedPlayers)
       );
@@ -77,18 +77,6 @@ class MatchService {
     });
   }
 
-  Future<int?> getCurrentPhrase(String roomCode) async {
-    final user = _authService.currentUser;
-    if (user == null) return null;
-
-    if ( currentMatch != null) {
-      final index = currentMatch!.playersIds.indexOf(user.uid);
-      if (index == -1) return 0;
-      return currentMatch!.secretNumbers[index];
-    }
-    return null;
-  }
-
   List<int> _generatePlayersNumbers(int maxNumberOfPlayers) {
     final random                = Random();
     final int limit             = maxNumberOfPlayers.clamp(1, 100);
@@ -107,14 +95,11 @@ class MatchService {
       final docSnapshot = await docRef.get();
       if (!docSnapshot.exists) return false; // Room don't exists
 
-      currentMatch = MatchModel.fromFirestore(docSnapshot);
-
       final List<String> currentPlayers = List<String>.from(docSnapshot.data()?['playersIds'] ?? []);
 
       if ( !currentPlayers.contains(user.uid) ) {
         await docRef.update({
-          'playersIds': FieldValue.arrayUnion([ user.uid ]),
-          'numberOfPlayers': FieldValue.increment(1),
+          'playersIds': FieldValue.arrayUnion([ user.uid ])
         });
       }
 

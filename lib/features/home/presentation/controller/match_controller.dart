@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phroneo/core/model/match_model.dart';
+import 'package:phroneo/features/auth/model/player_model.dart';
+import 'package:phroneo/features/home/model/match_model.dart';
 import 'package:phroneo/features/home/service/match_service.dart';
 
 import '../../../../core/router/app_routes.dart';
@@ -15,6 +16,7 @@ class MatchController extends ChangeNotifier {
 
   bool isLoading = false;
   MatchModel? currentMatch;
+  PlayerModel? currentUser;
   String? currentRoomCode;
 
   StreamSubscription<MatchModel?>? _matchSubscription;
@@ -109,4 +111,24 @@ class MatchController extends ChangeNotifier {
 
     return 0;
   }
+
+  bool allPlayersJoinMatch() {
+    final currentMatch = this.currentMatch;
+
+    if (currentMatch != null) {
+      final totalPlayersJoined = currentMatch.playersIds.length;
+      final maxPlayersLimit = currentMatch.maxPlayers;
+
+      if (totalPlayersJoined == maxPlayersLimit) return true;
+    }
+
+    return false;
+  }
+
+  bool get isHost {
+    final user = _authService.currentUser;
+    if (user == null || currentMatch == null) return false;
+    return currentMatch!.hostId == user.uid;
+  }
+
 }

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../../core/model/player_model.dart';
+import '../model/player_model.dart';
 
 class AuthService {
 
