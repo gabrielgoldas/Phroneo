@@ -131,7 +131,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
             CustomElevatedButton(
                 text: strings.confirm_creation,
                 onPressed: () {
-                  matchController.createMatch(context);
+                  matchController.createMatch(context, selectedPlayers);
                 }
             ),
           ],

@@ -6,7 +6,9 @@ import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
 
 class NumberPage extends StatelessWidget {
-  const NumberPage({ super.key });
+  final int number;
+
+  const NumberPage({ super.key, required this.number });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class NumberPage extends StatelessWidget {
         ),
 
         Text(
-          "70",
+          number.toString(),
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: AppFonts.cormorantInfant,
