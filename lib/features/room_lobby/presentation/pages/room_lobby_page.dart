@@ -13,7 +13,7 @@ import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
 
 class RoomLobbyPage extends StatefulWidget {
-  final String roomCode;
+  final String? roomCode;
 
   const RoomLobbyPage({super.key, required this.roomCode});
 
@@ -49,7 +49,8 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
           String numberOfPlayers =
               '${match.playersIds.length} de ${match.maxPlayers} entraram';
 
-          return Center(
+          return matchController.isHost
+              ? Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
@@ -77,26 +78,10 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: QrImageView(
-                          data: widget.roomCode,
+                          data: widget.roomCode ?? '',
                           version: QrVersions
                               .auto, // Calcula automaticamente a densidade do QR
                           size: 180.0,
-                        ),
-                      ),
-
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 12,
-                        ),
-                        child: Text(
-                          widget.roomCode,
-                          style: const TextStyle(
-                            fontFamily: AppFonts.cormorantInfant,
-                            fontWeight: FontWeight.bold,
-                            fontSize: AppFontSize.titleSmall,
-                            color: AppColors.black,
-                          ),
                         ),
                       ),
                     ],
@@ -105,7 +90,6 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
                   Column(
                     children: [
                       Text(
-                        // strings.qrCodeConfirmationInstruction,
                         numberOfPlayers,
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -129,6 +113,55 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
                         ),
                     ],
                   ),
+                ],
+              ),
+            ),
+          )
+              : Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const SizedBox.shrink(),
+
+                  Column(
+                    children: [
+                      Text(
+                        'Aguarde',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: AppFonts.cormorantInfant,
+                          fontWeight: FontWeight.bold,
+                          fontSize: AppFontSize.displaySmall,
+                          color: AppColors.black,
+                        ),
+                      ),
+
+                      Text(
+                        'Os jogadores ainda estão entrando na partida...',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: AppFonts.cormorantInfant,
+                          fontWeight: FontWeight.bold,
+                          fontSize: AppFontSize.titleMedium,
+                          color: AppColors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Text(
+                    numberOfPlayers,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: AppFonts.cormorantInfant,
+                      fontWeight: FontWeight.w500,
+                      fontSize: AppFontSize.titleSmall,
+                      color: AppColors.black,
+                    ),
+                  ),
+
                 ],
               ),
             ),

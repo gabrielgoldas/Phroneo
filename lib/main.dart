@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
 import 'package:phroneo/l10n/app_localizations.dart';
 
 import 'core/di/injection.dart';
@@ -27,7 +28,8 @@ class PhroneoApp extends StatelessWidget {
   PhroneoApp({super.key});
 
   final authController = getIt<AuthController>();
-  late final router = createRouter(authController);
+  final matchController = getIt<MatchController>();
+  late final router = createRouter(authController, matchController);
 
   @override
   Widget build(BuildContext context) {

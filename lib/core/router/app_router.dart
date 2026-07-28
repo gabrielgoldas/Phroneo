@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:phroneo/features/game/presentation/pages/game_page.dart';
+import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
 import 'package:phroneo/features/home/presentation/pages/home_page.dart';
 import 'package:phroneo/features/home/presentation/widgets/qr_scanner_screen.dart';
 import 'package:phroneo/features/onboarding/presentation/pages/onboarding_page.dart';
@@ -9,17 +11,29 @@ import 'package:phroneo/features/auth/presentation/pages/login_page.dart';
 import 'package:phroneo/features/ordering/presentation/pages/ordering_page.dart';
 import 'package:phroneo/features/room_lobby/presentation/pages/room_lobby_page.dart';
 
-GoRouter createRouter(AuthController authController) {
+import '../constants.dart';
+
+GoRouter createRouter(AuthController authController, MatchController matchController) {
   return GoRouter(
-    refreshListenable: authController,
+    refreshListenable: Listenable.merge([
+      authController,
+      matchController,
+    ]),
     redirect: (context, state)  {
 
+      // Auth
       final logged = authController.isLoggedIn;
-      final isLoginPage = state.uri.path == '/';
+      final itsOnLoginPage = state.uri.path == '/';
+      if (!logged && !itsOnLoginPage) return '/';
+      if (logged && itsOnLoginPage) return '/home';
 
-      if (!logged && !isLoginPage) return '/';
+      // Match
+      final match = matchController.currentMatch;
+      final itsOnLobbyPage = state.uri.path == '/room-lobby';
 
-      if (logged && isLoginPage) return '/home';
+      if (match?.status == StatusMatch.playing && itsOnLobbyPage) {
+        return '/game';
+      }
 
       return null;
     },
@@ -44,7 +58,7 @@ GoRouter createRouter(AuthController authController) {
         name: AppRoutes.roomLobby,
         path: '/room-lobby',
         builder: (context, state) {
-          final roomCode = state.extra as String;
+          final roomCode = state.extra as String?;
           return RoomLobbyPage( roomCode: roomCode );
         },
       ),

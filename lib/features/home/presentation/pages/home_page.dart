@@ -36,9 +36,9 @@ class _HomePage extends State<HomePage> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(mainAxisSize: MainAxisSize.min,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-
               SvgPicture.asset('assets/images/logo_phroneo.svg', width: 80),
 
               const SizedBox(height: 12),
@@ -48,20 +48,32 @@ class _HomePage extends State<HomePage> {
               const SizedBox(height: 32),
 
               CustomElevatedButton(
-                  text: context.l10n.create_match,
-                  onPressed: () {
-                    CreateMatchMenuBottomSheet.showCreateMatchMenuBottomSheet(context);
-                  }
+                text: context.l10n.create_match,
+                onPressed: () {
+                  CreateMatchMenuBottomSheet.showCreateMatchMenuBottomSheet(
+                    context,
+                  );
+                },
               ),
 
               const SizedBox(height: 12),
 
               CustomElevatedButton(
-                  text: context.l10n.join_match,
-                  onPressed: () async {
-                    final String? scannedCode = await context.pushNamed<String>(AppRoutes.qrScanner);
-                    if (scannedCode != null) matchController.joinMatch(context, scannedCode);
+                text: context.l10n.join_match,
+                onPressed: () async {
+                  final String? scannedCode = await context.pushNamed<String>(
+                    AppRoutes.qrScanner,
+                  );
+                  if (scannedCode != null && context.mounted) {
+                    final success = await matchController.joinMatch(
+                      scannedCode,
+                    );
+
+                    if (success && context.mounted) {
+                      context.pushNamed(AppRoutes.roomLobby);
+                    }
                   }
+                },
               ),
             ],
           ),

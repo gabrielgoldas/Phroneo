@@ -97,22 +97,23 @@ class MatchController extends ChangeNotifier {
     }
   }
 
-  Future joinMatch(BuildContext context, String roomCode) async {
+  Future<bool> joinMatch(String roomCode) async {
     isLoading = true;
     notifyListeners();
 
     try {
       final joinedRoom = await _matchService.joinMatch(roomCode);
-      if (joinedRoom && context.mounted) {
+      if (joinedRoom) {
         currentRoomCode = roomCode;
-        // Abre o túnel do Firebase ANTES de ir para a tela do jogo!
         listenToMatch(roomCode);
-        context.pushNamed(AppRoutes.game);
+        return true;
       }
+      return false;
     } catch (e) {
       if (kDebugMode) {
         print('Erro ao entrar partida: $e');
       }
+      return false;
     } finally {
       isLoading = false;
       notifyListeners();
