@@ -77,18 +77,6 @@ class MatchService {
     });
   }
 
-  int? getSecretNumber(String roomCode) {
-    final user = _authService.currentUser;
-    if (user == null) return null;
-
-    if ( currentMatch != null) {
-      final index = currentMatch!.playersIds.indexOf(user.uid);
-      if (index == -1) return 0;
-      return currentMatch!.secretNumbers[index];
-    }
-    return null;
-  }
-
   Future<int?> getCurrentPhrase(String roomCode) async {
     final user = _authService.currentUser;
     if (user == null) return null;
@@ -102,12 +90,11 @@ class MatchService {
   }
 
   List<int> _generatePlayersNumbers(int maxNumberOfPlayers) {
-    final random = Random();
-
-    return List.generate(
-      maxNumberOfPlayers,
-          (_) => random.nextInt(100) + 1,
-    );
+    final random                = Random();
+    final int limit             = maxNumberOfPlayers.clamp(1, 100);
+    final List<int> allNumbers  = List.generate(100, (index) => index + 1);
+    allNumbers.shuffle(random);
+    return allNumbers.take(limit).toList();
   }
 
   Future<bool> joinMatch(String roomCode) async {

@@ -37,6 +37,9 @@ void setupDependencies() {
   );
 
   getIt.registerLazySingleton<MatchController>(
-          () => MatchController(matchService: getIt<MatchService>())
+          () => MatchController(
+              matchService: getIt<MatchService>(),
+              authService: getIt<AuthService>()
+          )
   );
 }

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -8,30 +7,39 @@ import 'package:phroneo/core/model/match_model.dart';
 import 'package:phroneo/features/home/service/match_service.dart';
 
 import '../../../../core/router/app_routes.dart';
+import '../../../auth/service/auth_service.dart';
 
 class MatchController extends ChangeNotifier {
   final MatchService _matchService;
+  final AuthService _authService;
+
   bool isLoading = false;
   MatchModel? currentMatch;
   String? currentRoomCode;
-  StreamSubscription<DocumentSnapshot>? _matchSubscription;
 
-  MatchController({required this._matchService});
+  StreamSubscription<MatchModel?>? _matchSubscription;
+
+  MatchController({
+    required this._matchService,
+    required this._authService
+  });
 
   void listenToMatch(String roomCode) {
     _matchSubscription?.cancel();
+    final normalizedCode = roomCode.toUpperCase();
 
     _matchSubscription =
-        _matchService.streamMatch(roomCode).listen((newMatch) {
+        _matchService.streamMatch(normalizedCode).listen((newMatch) {
               currentMatch = newMatch;
+              print('🔄 O Stream atualizou! Nova lista de players: ${newMatch?.playersIds}');
               notifyListeners();
-            })
-            as StreamSubscription<DocumentSnapshot<Object?>>?;
+            });
   }
 
   void leaveMatch() {
     _matchSubscription?.cancel();
     currentMatch = null;
+    currentRoomCode = null;
     notifyListeners();
   }
 
@@ -42,8 +50,11 @@ class MatchController extends ChangeNotifier {
     try {
       currentRoomCode = await _matchService.createMatch(selectedPlayers);
 
-      if (currentRoomCode != null) {
+      if (currentRoomCode != null && context.mounted) {
+
+        listenToMatch(currentRoomCode!);
         context.pushNamed(AppRoutes.roomLobby, extra: currentRoomCode);
+
       } else {
         if (!context.mounted) return;
         ScaffoldMessenger.of(
@@ -66,7 +77,12 @@ class MatchController extends ChangeNotifier {
 
     try {
       final joinedRoom = await _matchService.joinMatch(roomCode);
-      if (joinedRoom) context.pushNamed(AppRoutes.game);
+      if (joinedRoom && context.mounted) {
+        currentRoomCode = roomCode;
+        // Abre o túnel do Firebase ANTES de ir para a tela do jogo!
+        listenToMatch(roomCode);
+        context.pushNamed(AppRoutes.game);
+      }
     } catch (e) {
       if (kDebugMode) {
         print('Erro ao entrar partida: $e');
@@ -77,19 +93,20 @@ class MatchController extends ChangeNotifier {
     }
   }
 
-  int? getSecretNumber() {
-    isLoading = true;
-    notifyListeners();
-    if (currentRoomCode == null ) return null;
-    final myNumber = _matchService.getSecretNumber(currentRoomCode!);
-    if (myNumber != null) {
-      isLoading = false;
-      notifyListeners();
-      return myNumber;
-    } else {
-      isLoading = false;
-      notifyListeners();
-      return 0;
+  int getSecretNumber() {
+    if (currentMatch == null) return 0;
+
+    final user = _authService.currentUser; // Ou pegando do _authService injetado no controller
+    if (user == null) return 0;
+
+    final myIndex = currentMatch!.playersIds.indexOf(user.uid);
+
+    if (myIndex != -1 && currentMatch!.secretNumbers.isNotEmpty) {
+      if (myIndex < currentMatch!.secretNumbers.length) {
+        return currentMatch!.secretNumbers[myIndex];
+      }
     }
+
+    return 0;
   }
 }
