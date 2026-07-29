@@ -70,7 +70,7 @@ class _HomePage extends State<HomePage> {
                     );
 
                     if (success && context.mounted) {
-                      context.pushNamed(AppRoutes.roomLobby);
+                      context.goNamed(AppRoutes.roomLobby);
                     }
                   }
                 },

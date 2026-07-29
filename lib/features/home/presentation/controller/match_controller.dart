@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phroneo/core/constants.dart';
+import 'package:phroneo/core/constants/constants.dart';
 import 'package:phroneo/features/auth/model/player_model.dart';
 import 'package:phroneo/features/home/model/match_model.dart';
 import 'package:phroneo/features/home/service/match_service.dart';
@@ -20,7 +20,9 @@ class MatchController extends ChangeNotifier {
   MatchModel? currentMatch;
   PlayerModel? currentUser;
   String? currentRoomCode;
+  int? totalPlayers;
   List<Option> _options = [];
+  bool _hasProcessedCurrentRound = false;
 
   StreamSubscription<MatchModel?>? _matchSubscription;
 
@@ -35,18 +37,33 @@ class MatchController extends ChangeNotifier {
 
       if (newMatch != null) {
         _initOptions(newMatch);
+
+        if (newMatch.status == StatusMatch.playing || newMatch.status == StatusMatch.lobby) {
+          _hasProcessedCurrentRound = false;
+        }
+
+        if (newMatch.status == StatusMatch.finished && !_hasProcessedCurrentRound) {
+          _hasProcessedCurrentRound = true;
+          _updateMyPlayerStats(newMatch);
+        }
       }
 
       notifyListeners();
     });
   }
 
-  // Método auxiliar para criar as opções apenas quando necessário
   void _initOptions(MatchModel match) {
-    // Se a lista de options já tem o mesmo tamanho, não sobrescrevemos
-    // para não perder a ordem que o usuário já arrastou!
     if (_options.isNotEmpty) {
-      return;
+      // Pegamos os números que estão na tela agora
+      final currentOptionNumbers = _options.map((e) => e.number).toList();
+
+      // Verificamos se eles são os mesmos números que vieram do Firebase agora
+      // (Usamos toSet() para ignorar a ordem, já que o host pode ter embaralhado)
+      bool isSameRound = currentOptionNumbers.toSet().containsAll(match.secretNumbers.toSet());
+
+      // Se for a mesma rodada, a gente retorna para não estragar a ordenação do Host.
+      // Se for FALSA, significa que a rodada mudou! Então o if é ignorado e a lista é recriada lá embaixo.
+      if (isSameRound) return;
     }
 
     final List<int> numbers = match.secretNumbers;
@@ -74,6 +91,8 @@ class MatchController extends ChangeNotifier {
   Future createMatch(BuildContext context, int selectedPlayers) async {
     isLoading = true;
     notifyListeners();
+
+    totalPlayers = selectedPlayers;
 
     try {
       currentRoomCode = await _matchService.createMatch(selectedPlayers);
@@ -220,6 +239,27 @@ class MatchController extends ChangeNotifier {
     if (isHost && currentRoomCode != null) {
       _matchService.updateStatusMatch(currentRoomCode!, StatusMatch.playing);
     }
+  }
+
+  Future<bool> leaveAndCloseCurrentMatch() async {
+    if (isHost && currentRoomCode != null) {
+      return await _matchService.leaveAndCloseCurrentMatch(currentRoomCode!);
+    }
+    return false;
+  }
+
+  Future<void> _updateMyPlayerStats(MatchModel match) async {
+    final currentMatch  = this.currentMatch;
+    final currentUserId = _authService.currentUser?.uid;
+    if (currentUserId == null && currentMatch == null) return;
+    await _matchService.updateMyPlayerStats(currentUserId!, currentMatch!);
+  }
+
+  Future<bool> newRoundMatch() async {
+    if (isHost && currentRoomCode != null && totalPlayers != null) {
+      return await _matchService.newRoundMatch(currentRoomCode!, totalPlayers!);
+    }
+    return false;
   }
 
 }

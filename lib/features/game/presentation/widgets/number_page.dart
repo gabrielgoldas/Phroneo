@@ -20,10 +20,10 @@ class NumberPage extends StatelessWidget {
           context.l10n.yourNumberIs,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.cormorantInfant,
-            fontWeight: FontWeight.bold,
+            fontFamily: AppFonts.marcellus,
+            fontWeight: FontWeight.w500,
             fontSize: AppFontSize.titleMedium,
-            color: AppColors.background,
+            color: AppColors.gray200,
           ),
         ),
 
@@ -34,7 +34,7 @@ class NumberPage extends StatelessWidget {
             fontFamily: AppFonts.cormorantInfant,
             fontWeight: FontWeight.bold,
             fontSize: AppFontSize.displayNumber,
-            color: AppColors.background,
+            color: AppColors.white,
             height: 0.9,
           ),
         ),

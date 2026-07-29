@@ -5,6 +5,7 @@ class PlayerModel {
   final String name;
   final String photoUrl;
   final int wins;
+  final int defeats;
   final int matchesPlayed;
 
   PlayerModel({
@@ -12,6 +13,7 @@ class PlayerModel {
     required this.name,
     required this.photoUrl,
     this.wins = 0,
+    this.defeats = 0,
     this.matchesPlayed = 0,
   });
 
@@ -22,6 +24,7 @@ class PlayerModel {
         name: data?['name'] ?? 'Anônimo',
         photoUrl: data?['photoUrl'] ?? '',
         wins: data?['wins'] ?? 0,
+        defeats: data?['defeats'] ?? 0,
         matchesPlayed: data?['matchesPlayed'] ?? 0
     );
   }
@@ -31,6 +34,7 @@ class PlayerModel {
       'name': name,
       'photoUrl': photoUrl,
       'wins': wins,
+      'defeats': defeats,
       'matchesPlayed': matchesPlayed,
       'createdAt': FieldValue.serverTimestamp(),
     };

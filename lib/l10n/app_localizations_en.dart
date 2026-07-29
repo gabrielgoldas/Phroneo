@@ -103,4 +103,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareQrCodeInstruction => 'Show the QR Code to your friends so they can play with you!';
+
+  @override
+  String get leave => 'Leave';
 }

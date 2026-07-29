@@ -286,6 +286,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show the QR Code to your friends so they can play with you!'**
   String get shareQrCodeInstruction;
+
+  /// No description provided for @leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get leave;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

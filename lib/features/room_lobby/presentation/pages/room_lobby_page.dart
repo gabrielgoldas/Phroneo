@@ -30,6 +30,16 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
     matchController = getIt<MatchController>();
   }
 
+  String _numberOfPlayers() {
+    final match = matchController.currentMatch;
+    if (match == null) return '';
+    if (match.playersIds.length >= match.maxPlayers) {
+      return 'Todos os jogadores entraram na partida';
+    } else {
+     return '${match.playersIds.length} de ${match.maxPlayers} entraram';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final strings = context.l10n;
@@ -45,9 +55,6 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
           if (match == null) {
             return const Center(child: CircularProgressIndicator());
           }
-
-          String numberOfPlayers =
-              '${match.playersIds.length} de ${match.maxPlayers} entraram';
 
           return matchController.isHost
               ? Center(
@@ -79,8 +86,7 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
                         ),
                         child: QrImageView(
                           data: widget.roomCode ?? '',
-                          version: QrVersions
-                              .auto, // Calcula automaticamente a densidade do QR
+                          version: QrVersions.auto, // Calcula automaticamente a densidade do QR
                           size: 180.0,
                         ),
                       ),
@@ -90,7 +96,7 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
                   Column(
                     children: [
                       Text(
-                        numberOfPlayers,
+                        _numberOfPlayers(),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: AppFonts.cormorantInfant,
@@ -152,7 +158,7 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
                   ),
 
                   Text(
-                    numberOfPlayers,
+                    _numberOfPlayers(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: AppFonts.cormorantInfant,

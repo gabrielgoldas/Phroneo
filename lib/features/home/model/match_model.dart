@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:phroneo/core/constants.dart';
+import 'package:phroneo/core/constants/constants.dart';
 import 'package:phroneo/features/home/model/phrase_model.dart';
 
 class MatchModel {
@@ -13,6 +13,7 @@ class MatchModel {
   final int wins;
   final int defeats;
   final StatusMatch status; // lobby, playing, finished
+  final bool? lastRoundVictory;
 
 
   MatchModel({
@@ -25,7 +26,8 @@ class MatchModel {
     required this.playerColors,
     this.wins = 0,
     this.defeats = 0,
-    this.status = StatusMatch.lobby
+    this.status = StatusMatch.lobby,
+    this.lastRoundVictory
   });
 
   Map<String, dynamic> toFirestore() {
@@ -39,6 +41,7 @@ class MatchModel {
       'wins': wins,
       'defeats': defeats,
       'status': status.name,
+      'lastRoundVictory': lastRoundVictory,
     };
   }
 
@@ -63,6 +66,7 @@ class MatchModel {
       wins: data['wins'] ?? 0,
       defeats: data['defeats'] ?? 0,
       status: getStatus(data['status'] ?? 'lobby'),
+      lastRoundVictory: data['lastRoundVictory'],
     );
   }
 }

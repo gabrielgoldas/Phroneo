@@ -1,5 +1,6 @@
 enum StatusMatch {
   lobby,
   playing,
-  finished
+  finished,
+  finishedRound
 }

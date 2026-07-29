@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/utils/localization_build_context.dart';
@@ -7,9 +8,9 @@ import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
 import 'package:phroneo/features/ordering/model/option.dart';
 
+import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
-import '../widgets/round_result_dialog.dart';
 
 class OrderingPage extends StatefulWidget {
   const OrderingPage({super.key});
@@ -21,22 +22,6 @@ class OrderingPage extends StatefulWidget {
 class _OrderingPage extends State<OrderingPage> {
   late final MatchController matchController;
   bool showNumbers = false;
-
-  void _showResultDialog(BuildContext context, bool everyoneWon) {
-    showGeneralDialog(
-      context: context,
-      barrierDismissible: false,
-      barrierLabel: '',
-      barrierColor: AppColors.bgTransparent,
-      transitionDuration: const Duration(seconds: 1),
-      pageBuilder: (_, _, _) {
-        return PopScope(
-          canPop: false,
-          child: RoundResultDialog(everyoneWon: everyoneWon),
-        );
-      },
-    );
-  }
 
   @override
   void initState() {
@@ -167,8 +152,8 @@ class _OrderingPage extends State<OrderingPage> {
                     onPressed: () async {
                       setState(() => showNumbers = true);
                       final result = await matchController.finishRoundAndSaveResult();
-                      if (!context.mounted) return;
-                      _showResultDialog(context, result);
+                      await Future.delayed(const Duration(seconds: 2));
+                      if (context.mounted) context.goNamed(AppRoutes.roundResult);
                     },
                   ),
               ],

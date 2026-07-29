@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/features/game/presentation/widgets/phrase_page.dart';
 import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
 
+import '../../../../core/constants/constants.dart';
+import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../widgets/number_page.dart';
 
@@ -18,6 +21,7 @@ class _GamePage extends State<GamePage> {
   late final MatchController matchController;
 
   bool showNumberPage = false;
+  bool _isNavigating = false;
 
   void togglePageToShow() {
     setState(() {
@@ -29,6 +33,24 @@ class _GamePage extends State<GamePage> {
   void initState() {
     super.initState();
     matchController = getIt<MatchController>();
+    matchController.addListener(_onMatchStateChanged);
+  }
+
+  void _onMatchStateChanged() {
+    if (
+        matchController.currentMatch?.status == StatusMatch.finishedRound
+        && !matchController.isHost
+        && !_isNavigating
+    ) {
+      _isNavigating = true;
+      if (mounted) context.goNamed(AppRoutes.roundResult);
+    }
+  }
+
+  @override
+  void dispose() {
+    matchController.removeListener(_onMatchStateChanged);
+    super.dispose();
   }
 
   @override

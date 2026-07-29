@@ -7,6 +7,7 @@ class AppColors {
   static const backgroundClearer      = Color(0xFFE3DAD1);
   static const bgTransparent          = Color(0xBD2D2D2D);
   static const primaryColor           = Color(0xFF774D4D);
+  static const secondaryColor         = Color(0xFF8E6666);
   static const black                  = Color(0xFF2D2D2D);
   static const white                  = Color(0xFFF2F2F2);
 

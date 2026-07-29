@@ -9,9 +9,10 @@ import 'package:phroneo/features/home/presentation/widgets/qr_scanner_screen.dar
 import 'package:phroneo/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:phroneo/features/auth/presentation/pages/login_page.dart';
 import 'package:phroneo/features/ordering/presentation/pages/ordering_page.dart';
+import 'package:phroneo/features/ordering/presentation/widgets/round_result_page.dart';
 import 'package:phroneo/features/room_lobby/presentation/pages/room_lobby_page.dart';
 
-import '../constants.dart';
+import '../constants/constants.dart';
 
 GoRouter createRouter(AuthController authController, MatchController matchController) {
   return GoRouter(
@@ -76,6 +77,11 @@ GoRouter createRouter(AuthController authController, MatchController matchContro
         name: AppRoutes.ordering,
         path: '/ordering',
         builder: (context, state) => const OrderingPage(),
+      ),
+      GoRoute(
+        name: AppRoutes.roundResult,
+        path: '/round-result',
+        builder: (context, state) => const RoundResultPage(),
       )
     ],
   );

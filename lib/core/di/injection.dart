@@ -6,6 +6,7 @@ import 'package:phroneo/features/auth/presentation/controllers/auth_controller.d
 import 'package:phroneo/features/auth/service/auth_service.dart';
 import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
 
+import '../../features/home/repository/phrase_repository.dart';
 import '../../features/home/service/match_service.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -16,6 +17,7 @@ void setupDependencies() {
   getIt.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
   getIt.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
+  getIt.registerLazySingleton<PhraseRepository>(() => PhraseRepository());
 
   getIt.registerLazySingleton<AuthService>(
       () => AuthService(
@@ -32,7 +34,8 @@ void setupDependencies() {
   getIt.registerLazySingleton<MatchService>(
           () => MatchService(
               authService: getIt<AuthService>(),
-              firestore: getIt<FirebaseFirestore>()
+              firestore: getIt<FirebaseFirestore>(),
+              phraseRepository: getIt<PhraseRepository>()
       )
   );
 

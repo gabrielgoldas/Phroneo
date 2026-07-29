@@ -27,33 +27,32 @@ class PhrasePage extends StatelessWidget {
       children: [
         const SizedBox.shrink(),
 
+        Text(
+          context.l10n.roundPhrase,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: AppFonts.marcellus,
+            fontWeight: FontWeight.w500,
+            fontSize: AppFontSize.bodyLarge,
+            color: AppColors.gray200,
+          ),
+        ),
+
         Column(
           children: [
-            Text(
-              context.l10n.roundPhrase,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: AppFonts.cormorantInfant,
-                fontWeight: FontWeight.w500,
-                fontSize: AppFontSize.bodyLarge,
-                color: AppColors.white,
-              ),
-            ),
-
-            const SizedBox(height: 8),
 
             Text(
-              phrase.text,
+              '"${phrase.text}"',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: AppFonts.cormorantInfant,
                 fontWeight: FontWeight.bold,
-                fontSize: AppFontSize.titleLargeX,
+                fontSize: AppFontSize.display,
                 color: AppColors.white,
               ),
             ),
 
-            const SizedBox(height: 8),
+            const SizedBox(height: 24),
 
             Text(
               phrase.biggestNumber,
@@ -79,15 +78,22 @@ class PhrasePage extends StatelessWidget {
 
         Column(
           children: [
-            SvgPicture.asset('assets/images/long_press.svg', width: 48),
+            SvgPicture.asset(
+                'assets/images/long_press.svg',
+                width: 48,
+              colorFilter: const ColorFilter.mode(
+                AppColors.gray200,
+                BlendMode.srcIn,
+              ),
+            ),
             Text(
               context.l10n.tapAndHoldToSeeNumber,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: AppFonts.cormorantInfant,
+                fontFamily: AppFonts.marcellus,
                 fontWeight: FontWeight.w500,
                 fontSize: AppFontSize.titleSmall,
-                color: AppColors.background,
+                color: AppColors.gray200,
               ),
             ),
           ],

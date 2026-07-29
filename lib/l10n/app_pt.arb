@@ -30,5 +30,6 @@
   "tooBadTitle"                   : "Que pena",
   "startButton"                   : "Iniciar",
   "qrCodeConfirmationInstruction" : "Todos leram o QR Code? \nSe sim, então vamos lá!",
-  "shareQrCodeInstruction"        : "Mostre o QR Code para seus amigos jogarem com você!"
+  "shareQrCodeInstruction"        : "Mostre o QR Code para seus amigos jogarem com você!",
+  "leave"                         : "Sair"
 }
