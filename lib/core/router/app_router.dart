@@ -43,7 +43,7 @@ GoRouter createRouter(AuthController authController, MatchController matchContro
       GoRoute(
         name: AppRoutes.login,
         path: '/',
-        builder: (context, state) => const LoginPage(),
+        builder: (context, state) => LoginPage( authController: authController )
       ),
       GoRoute(
         name: AppRoutes.onboarding,
@@ -53,14 +53,17 @@ GoRouter createRouter(AuthController authController, MatchController matchContro
       GoRoute(
         name: AppRoutes.home,
         path: '/home',
-        builder: (context, state) => const HomePage(),
+        builder: (context, state) => HomePage( matchController: matchController )
       ),
       GoRoute(
         name: AppRoutes.roomLobby,
         path: '/room-lobby',
         builder: (context, state) {
           final roomCode = state.extra as String?;
-          return RoomLobbyPage( roomCode: roomCode );
+          return RoomLobbyPage(
+            roomCode: roomCode,
+            matchController: matchController,
+          );
         },
       ),
       GoRoute(
@@ -71,17 +74,17 @@ GoRouter createRouter(AuthController authController, MatchController matchContro
       GoRoute(
         name: AppRoutes.game,
         path: '/game',
-        builder: (context, state) => const GamePage(),
+        builder: (context, state) => GamePage( matchController: matchController )
       ),
       GoRoute(
         name: AppRoutes.ordering,
         path: '/ordering',
-        builder: (context, state) => const OrderingPage(),
+        builder: (context, state) => OrderingPage( matchController: matchController)
       ),
       GoRoute(
         name: AppRoutes.roundResult,
         path: '/round-result',
-        builder: (context, state) => const RoundResultPage(),
+        builder: (context, state) => RoundResultPage( matchController: matchController )
       )
     ],
   );

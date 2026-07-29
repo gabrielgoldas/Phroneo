@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
-import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/theme/app_font_size.dart';
 import 'package:phroneo/core/theme/app_fonts.dart';
@@ -10,32 +8,24 @@ import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:phroneo/features/home/presentation/widgets/custom_elevated_icon_button.dart';
 
-import '../../../../core/di/injection.dart';
-
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final AuthController authController;
+
+  const LoginPage({super.key, required this.authController});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late final AuthController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = getIt<AuthController>();
-  }
-
   @override
   Widget build(BuildContext context) {
     final strings = context.l10n;
 
     return AnimatedBuilder(
-      animation: controller,
+      animation: widget.authController,
       builder: (context, _) {
-        return controller.isLoading
+        return widget.authController.isLoading
             ? const Center(child: CircularProgressIndicator())
             : Scaffold(
                 backgroundColor: AppColors.background,
@@ -84,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                           filePath: 'assets/icons/google_icon.svg',
                           labelText: context.l10n.login_google,
                           onPressed: () {
-                            controller.login(context);
+                            widget.authController.login(context);
                           },
                         ),
                       ],

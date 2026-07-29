@@ -80,7 +80,7 @@ class PhrasePage extends StatelessWidget {
           children: [
             SvgPicture.asset(
                 'assets/images/long_press.svg',
-                width: 48,
+                width: 46,
               colorFilter: const ColorFilter.mode(
                 AppColors.gray200,
                 BlendMode.srcIn,
@@ -92,7 +92,7 @@ class PhrasePage extends StatelessWidget {
               style: TextStyle(
                 fontFamily: AppFonts.marcellus,
                 fontWeight: FontWeight.w500,
-                fontSize: AppFontSize.titleSmall,
+                fontSize: AppFontSize.bodyLargeX,
                 color: AppColors.gray200,
               ),
             ),

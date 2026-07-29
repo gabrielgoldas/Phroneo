@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/theme/app_font_size.dart';
 import 'package:phroneo/core/theme/app_fonts.dart';
@@ -15,25 +14,25 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/widgets/custom_outlined_button.dart';
 
 class RoundResultPage extends StatefulWidget {
-  const RoundResultPage({super.key});
+  final MatchController matchController;
+
+  const RoundResultPage({super.key, required this.matchController});
 
   @override
   State<RoundResultPage> createState() => _RoundResultPageState();
 }
 
 class _RoundResultPageState extends State<RoundResultPage> {
-  late final MatchController matchController;
   bool _isNavigating = false;
 
   @override
   void initState() {
     super.initState();
-    matchController = getIt<MatchController>();
-    matchController.addListener(_onMatchStateChanged);
+    widget.matchController.addListener(_onMatchStateChanged);
   }
 
   void _onMatchStateChanged() {
-    final status = matchController.currentMatch?.status;
+    final status = widget.matchController.currentMatch?.status;
 
     if (status == StatusMatch.playing && !_isNavigating) {
       _isNavigating = true;
@@ -48,12 +47,12 @@ class _RoundResultPageState extends State<RoundResultPage> {
 
   @override
   void dispose() {
-    matchController.removeListener(_onMatchStateChanged);
+    widget.matchController.removeListener(_onMatchStateChanged);
     super.dispose();
   }
 
   bool? _isVictory() {
-    final match = matchController.currentMatch;
+    final match = widget.matchController.currentMatch;
     if (match != null && match.lastRoundVictory != null) {
       return match.lastRoundVictory!;
     }
@@ -79,7 +78,7 @@ class _RoundResultPageState extends State<RoundResultPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              matchController.isHost
+              widget.matchController.isHost
                   ? const SizedBox.shrink()
                   : const SizedBox(),
 
@@ -128,7 +127,7 @@ class _RoundResultPageState extends State<RoundResultPage> {
                 ],
               ),
 
-              matchController.isHost
+              widget.matchController.isHost
                   ? Column(
                       children: [
                         CustomOutlinedButton(
@@ -137,10 +136,11 @@ class _RoundResultPageState extends State<RoundResultPage> {
                               ? AppColors.primaryColor
                               : AppColors.gray200,
                           onPressed: () async {
-                            final leavingSuccess = await matchController
+                            final leavingSuccess = await widget.matchController
                                 .leaveAndCloseCurrentMatch();
-                            if (leavingSuccess && context.mounted)
+                            if (leavingSuccess && context.mounted) {
                               context.goNamed(AppRoutes.home);
+                            }
                           },
                         ),
 
@@ -153,7 +153,7 @@ class _RoundResultPageState extends State<RoundResultPage> {
                               ? AppColors.white
                               : AppColors.primaryColor,
                           onPressed: () async {
-                            await matchController.newRoundMatch();
+                            await widget.matchController.newRoundMatch();
                           },
                         ),
                       ],

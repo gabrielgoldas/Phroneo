@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
@@ -13,25 +12,23 @@ import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
 
 class RoomLobbyPage extends StatefulWidget {
+  final MatchController matchController;
   final String? roomCode;
 
-  const RoomLobbyPage({super.key, required this.roomCode});
+  const RoomLobbyPage({
+    super.key,
+    required this.roomCode,
+    required this.matchController
+  });
 
   @override
   State<RoomLobbyPage> createState() => _RoomLobbyPageState();
 }
 
 class _RoomLobbyPageState extends State<RoomLobbyPage> {
-  late final MatchController matchController;
-
-  @override
-  void initState() {
-    super.initState();
-    matchController = getIt<MatchController>();
-  }
 
   String _numberOfPlayers() {
-    final match = matchController.currentMatch;
+    final match = widget.matchController.currentMatch;
     if (match == null) return '';
     if (match.playersIds.length >= match.maxPlayers) {
       return 'Todos os jogadores entraram na partida';
@@ -48,15 +45,15 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(),
       body: ListenableBuilder(
-        listenable: matchController,
+        listenable: widget.matchController,
         builder: (context, child) {
-          final match = matchController.currentMatch;
+          final match = widget.matchController.currentMatch;
 
           if (match == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return matchController.isHost
+          return widget.matchController.isHost
               ? Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -108,11 +105,11 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
 
                       const SizedBox(height: 24),
 
-                      if (matchController.allPlayersJoinMatch())
+                      if (widget.matchController.allPlayersJoinMatch())
                         CustomElevatedButton(
                           text: strings.startButton,
                           onPressed: () async {
-                            await matchController.startMatch();
+                            await widget.matchController.startMatch();
                             if (!context.mounted) return;
                             context.pushNamed(AppRoutes.game);
                           },

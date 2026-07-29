@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/features/game/presentation/widgets/phrase_page.dart';
 import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
@@ -11,14 +10,15 @@ import '../../../../core/theme/app_colors.dart';
 import '../widgets/number_page.dart';
 
 class GamePage extends StatefulWidget {
-  const GamePage({ super.key });
+  final MatchController matchController;
+
+  const GamePage({ super.key, required this.matchController });
 
   @override
   State<StatefulWidget> createState() => _GamePage();
 }
 
 class _GamePage extends State<GamePage> {
-  late final MatchController matchController;
 
   bool showNumberPage = false;
   bool _isNavigating = false;
@@ -32,14 +32,13 @@ class _GamePage extends State<GamePage> {
   @override
   void initState() {
     super.initState();
-    matchController = getIt<MatchController>();
-    matchController.addListener(_onMatchStateChanged);
+    widget.matchController.addListener(_onMatchStateChanged);
   }
 
   void _onMatchStateChanged() {
     if (
-        matchController.currentMatch?.status == StatusMatch.finishedRound
-        && !matchController.isHost
+        widget.matchController.currentMatch?.status == StatusMatch.finishedRound
+        && !widget.matchController.isHost
         && !_isNavigating
     ) {
       _isNavigating = true;
@@ -49,13 +48,13 @@ class _GamePage extends State<GamePage> {
 
   @override
   void dispose() {
-    matchController.removeListener(_onMatchStateChanged);
+    widget.matchController.removeListener(_onMatchStateChanged);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final myColor = Color(matchController.getMyColor());
+    final myColor = Color(widget.matchController.getMyColor());
 
     final backgroundColor = showNumberPage
         ? HSLColor.fromColor(myColor).withLightness(0.35).toColor()
@@ -86,9 +85,9 @@ class _GamePage extends State<GamePage> {
                   vertical: 54.0,
                 ),
                 child: ListenableBuilder(
-                  listenable: matchController,
+                  listenable: widget.matchController,
                   builder: (context, child) {
-                    if (matchController.currentMatch == null) {
+                    if (widget.matchController.currentMatch == null) {
                       return const CircularProgressIndicator();
                     }
 
@@ -99,12 +98,12 @@ class _GamePage extends State<GamePage> {
                       child: showNumberPage
                           ? NumberPage(
                               key: ValueKey('number_page'),
-                              number:  matchController.getSecretNumber() ?? 0,
+                              number:  widget.matchController.getSecretNumber(),
                           )
                           : PhrasePage(
                               key: ValueKey('phrase_page'),
-                              phrase: matchController.currentMatch!.currentPhrase,
-                              isHost: matchController.isHost,
+                              phrase: widget.matchController.currentMatch!.currentPhrase,
+                              isHost: widget.matchController.isHost,
                           ),
                     );
                   },

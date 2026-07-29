@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
@@ -13,30 +12,25 @@ import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
 
 class OrderingPage extends StatefulWidget {
-  const OrderingPage({super.key});
+  final MatchController matchController;
+
+  const OrderingPage({ super.key, required this.matchController });
 
   @override
   State<StatefulWidget> createState() => _OrderingPage();
 }
 
 class _OrderingPage extends State<OrderingPage> {
-  late final MatchController matchController;
   bool showNumbers = false;
-
-  @override
-  void initState() {
-    super.initState();
-    matchController = getIt<MatchController>();
-  }
 
   @override
   Widget build(BuildContext context) {
     final strings = context.l10n;
 
     return ListenableBuilder(
-      listenable: matchController,
+      listenable: widget.matchController,
       builder: (context, child) {
-        List<Option> options = matchController.getOptions();
+        List<Option> options = widget.matchController.getOptions();
 
         return Scaffold(
           appBar: CustomAppBar(),
@@ -78,7 +72,7 @@ class _OrderingPage extends State<OrderingPage> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: options.length,
-                        onReorder: matchController.onReorder,
+                        onReorder: widget.matchController.onReorder,
                         proxyDecorator:
                           ( Widget child, int index, Animation<double> animation ) {
                             return AnimatedBuilder(
@@ -146,12 +140,12 @@ class _OrderingPage extends State<OrderingPage> {
                   ],
                 ),
 
-                if (matchController.isHost)
+                if (widget.matchController.isHost)
                   CustomElevatedButton(
                     text: strings.doneButton,
                     onPressed: () async {
                       setState(() => showNumbers = true);
-                      final result = await matchController.finishRoundAndSaveResult();
+                      await widget.matchController.finishRoundAndSaveResult();
                       await Future.delayed(const Duration(seconds: 2));
                       if (context.mounted) context.goNamed(AppRoutes.roundResult);
                     },

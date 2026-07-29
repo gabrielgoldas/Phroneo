@@ -12,7 +12,7 @@ class MatchModel {
   final List<int> playerColors;
   final int wins;
   final int defeats;
-  final StatusMatch status; // lobby, playing, finished
+  final StatusMatch status;
   final bool? lastRoundVictory;
 
 
@@ -56,7 +56,7 @@ class MatchModel {
     }
 
     return MatchModel(
-      id: snapshot.id, // O ID é o código da sala
+      id: snapshot.id,
       hostId: data['hostId'] ?? '',
       playersIds: List<String>.from(data['playersIds'] ?? []),
       maxPlayers: data['numberOfPlayers'] ?? 1,

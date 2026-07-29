@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
@@ -13,21 +12,15 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/custom_title.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final MatchController matchController;
+
+  const HomePage({ super.key, required this.matchController });
 
   @override
   State<HomePage> createState() => _HomePage();
 }
 
 class _HomePage extends State<HomePage> {
-  late final MatchController matchController;
-
-  @override
-  void initState() {
-    super.initState();
-    matchController = getIt<MatchController>();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +45,7 @@ class _HomePage extends State<HomePage> {
                 onPressed: () {
                   CreateMatchMenuBottomSheet.showCreateMatchMenuBottomSheet(
                     context,
+
                   );
                 },
               ),
@@ -65,7 +59,7 @@ class _HomePage extends State<HomePage> {
                     AppRoutes.qrScanner,
                   );
                   if (scannedCode != null && context.mounted) {
-                    final success = await matchController.joinMatch(
+                    final success = await widget.matchController.joinMatch(
                       scannedCode,
                     );
 
