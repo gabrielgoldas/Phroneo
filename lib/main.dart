@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -17,17 +20,25 @@ void main() async {
 
   // Connecting app to Firebase project
   await Firebase.initializeApp(
-    // Use the correct config
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  setupDependencies();
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
 
-  await LocaleSettings.useDeviceLocale();
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+
+  setupDependencies();
+
+  await LocaleSettings.useDeviceLocale();
 
   runApp(
     TranslationProvider(

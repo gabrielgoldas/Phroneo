@@ -27,6 +27,7 @@ dependencies:
   slang: ^4.18.0
   slang_flutter: ^4.18.0
   flutter_animate: ^4.5.2
+  firebase_crashlytics: ^5.2.6
 
 dev_dependencies:
   flutter_test:
