@@ -1,6 +1,7 @@
 class AppFontSize {
   // Displays / Headlines
   static const double displayNumber = 160.0;
+  static const double displaySmall  = 40.0;
   static const double display       = 32.0;
 
   // Titles

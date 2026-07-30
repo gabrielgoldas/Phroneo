@@ -4,14 +4,16 @@ import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/core/widgets/custom_outlined_button.dart';
-import 'package:phroneo/features/onboarding/data/entities/onboarding_page_data.dart';
 import 'package:phroneo/features/onboarding/presentation/widgets/tutorial_page.dart';
+import 'package:phroneo/features/onboarding/repository/onboarding_repository.dart';
+import 'package:phroneo/i18n/strings.g.dart';
 
-import '../../../../core/utils/localization_build_context.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 
 class Onboarding extends StatefulWidget {
-  const Onboarding({super.key});
+  final OnboardingRepository _onboardingRepository;
+
+  const Onboarding({ super.key, required this._onboardingRepository });
 
   @override
   State<Onboarding> createState() => _OnboardingState();
@@ -31,7 +33,7 @@ class _OnboardingState extends State<Onboarding> {
 
   @override
   Widget build(BuildContext context) {
-    final strings = context.l10n;
+    final allOnboardingData = widget._onboardingRepository.allOnboardingData;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -42,7 +44,7 @@ class _OnboardingState extends State<Onboarding> {
           Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: onboardingPages.length,
+                itemCount: allOnboardingData.length,
 
                 onPageChanged: (index) {
                   setState(() {
@@ -51,7 +53,7 @@ class _OnboardingState extends State<Onboarding> {
                 },
 
                 itemBuilder: (_, index) {
-                  return TutorialPage(page: onboardingPages[index],
+                  return TutorialPage(page: allOnboardingData[index],
                   );
                 },
               )
@@ -60,7 +62,7 @@ class _OnboardingState extends State<Onboarding> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
-                onboardingPages.length,
+                allOnboardingData.length,
                 (index) => Container(
                   margin: const EdgeInsets.all(4),
                   width: currentPage == index ? 12 : 8,
@@ -77,7 +79,7 @@ class _OnboardingState extends State<Onboarding> {
 
           (currentPage > 0) ?
           CustomOutlinedButton(
-              text: strings.previous,
+              text: t.onboardingPage.previous,
               onPressed: () {
                 if (currentPage > 0) {
                   _pageController.previousPage(
@@ -90,17 +92,17 @@ class _OnboardingState extends State<Onboarding> {
               :
           const SizedBox.shrink(),
 
-          currentPage == onboardingPages.length - 1 ?
+          currentPage == allOnboardingData.length - 1 ?
           CustomElevatedButton(
-            text: strings.ready,
+            text: t.onboardingPage.ready,
             onPressed: () {
               context.goNamed(AppRoutes.home);
               },
           ) :
           CustomElevatedButton(
-            text: strings.next,
+            text: t.onboardingPage.next,
             onPressed: () {
-              if (currentPage < onboardingPages.length - 1) {
+              if (currentPage < allOnboardingData.length - 1) {
                 _pageController.nextPage(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut
