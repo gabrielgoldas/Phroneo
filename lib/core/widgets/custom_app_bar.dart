@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/di/injection.dart';
-import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/features/auth/service/auth_service.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../features/auth/presentation/widgets/profile_menu_bottom_sheet.dart';
+import '../../i18n/strings.g.dart';
 import '../theme/app_fonts.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -43,7 +43,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: backgroundColor,
       centerTitle: true,
       title: Text(
-        context.l10n.app_name,
+        t.app_name,
         style: TextStyle(
           fontFamily: AppFonts.cinzel,
           fontSize: AppFontSize.bodySmall,

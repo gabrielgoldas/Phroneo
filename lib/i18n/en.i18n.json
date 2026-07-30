@@ -1,0 +1,79 @@
+{
+  "app_name"                        : "Phroneo",
+
+  "authPage": {
+    "login_google"                  : "Sign in with Google",
+    "privacy_policy"                : "Select your account here. \nBy signing in, you agree to our privacy policy",
+    "anonymous"                     : "Anonymous",
+    "how_to_play"                   : "How to play",
+    "exit"                          : "Log out"
+  },
+
+  "gamePage": {
+    "yourNumberIs"                  : "Your number is:",
+    "roundPhrase"                   : "Round phrase:",
+    "tapAndHoldToSeeNumber"         : "Tap and hold to see your number",
+    "sortChoices"                   : "Sort choices"
+  },
+
+  "homePage": {
+    "create_match"                  : "Create a match",
+    "join_match"                    : "Join match",
+    "confirm_creation"              : "Create",
+    "player_count_question"         : "How many players?",
+    "alignQrCode"                   : "Align the QR code in the center",
+    "welcome_message"               : "Let's play?"
+  },
+
+  "onboardingPage": {
+    "ready"                         : "Ready!",
+    "next"                          : "Next",
+    "previous"                      : "Prev",
+
+    "repo": {
+      "objective": {
+        "title"                     : "The objective",
+        "description"               : "Work together to put the numbers in the correct order."
+      },
+      "receiveNumber": {
+        "title"                     : "Receive your number",
+        "description"               : "When starting a round, each player receives a secret number and a color.\n\nThe higher the number, the more your answer should represent the upper end of the scale. The lower the number, the closer it should be to the lower end."
+      },
+      "thinkPhrase": {
+        "title"                     : "Think about the phrase",
+        "description"               : "A phrase will be presented to all players.\n\nExample: \"How tasty is this food?\"\n\n1 → something you would never eat\n100 → your favorite food\n\nIMPORTANT\nDo not reveal your answer"
+      },
+      "discoverOrder": {
+        "title"                     : "Discover the order",
+        "description"               : "After everyone answers:\n\nListen to each other's answers\nDiscuss as a group\nTry to discover the correct position of each player\n\nThe goal is to build the number sequence without anyone revealing their value."
+      },
+      "reveal": {
+        "title"                     : "Reveal",
+        "description"               : "When the group is ready:\n\nConfirm the chosen sequence\nReveal the numbers\nFind out if the order is correct\n\n   If all players are in the correct position, the round is won!"
+      }
+    }
+  },
+
+  "orderingPage": {
+    "sortChoicesInstruction"        : "Sort the colors according to the imagined number. \nThe numbers must be from highest to lowest.",
+    "highestNumberLabel"            : "Highest number (100)",
+    "lowestNumberLabel"             : "Lowest number (1)",
+    "doneButton"                    : "Done",
+    "victoryMessage"                : "You Won!",
+    "defeatMessage"                 : "You Lost!",
+    "congratulationsTitle"          : "Congratulations",
+    "tooBadTitle"                   : "Too bad",
+    "leave"                         : "Leave",
+    "newRoundButton"                : "New Round"
+  },
+
+  "roomLobby": {
+    "allPlayersJoinedMatch"         : "All the players joined the match",
+    "playersJoined"                 : "${current} de ${max} entraram",
+    "wait"                          : "Wait",
+    "playersStillJoining"           : "The players are still joining the match...",
+    "startButton"                   : "Start",
+    "shareQrCodeInstruction"        : "Show the QR Code to your friends so they can play with you!"
+  }
+
+}

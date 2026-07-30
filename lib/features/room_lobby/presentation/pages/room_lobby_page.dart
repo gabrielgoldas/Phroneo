@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
-import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
+import 'package:phroneo/i18n/strings.g.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -18,7 +18,7 @@ class RoomLobbyPage extends StatefulWidget {
   const RoomLobbyPage({
     super.key,
     required this.roomCode,
-    required this.matchController
+    required this.matchController,
   });
 
   @override
@@ -26,20 +26,44 @@ class RoomLobbyPage extends StatefulWidget {
 }
 
 class _RoomLobbyPageState extends State<RoomLobbyPage> {
-
-  String _numberOfPlayers() {
+  Widget _numberOfPlayers() {
     final match = widget.matchController.currentMatch;
-    if (match == null) return '';
+    if (match == null) return Text('');
     if (match.playersIds.length >= match.maxPlayers) {
-      return 'Todos os jogadores entraram na partida';
+      return Text(
+        t.roomLobby.allPlayersJoinedMatch,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: AppFonts.cormorantInfant,
+          fontWeight: FontWeight.w500,
+          fontSize: AppFontSize.titleSmall,
+          color: AppColors.black,
+        ),
+      );
     } else {
-     return '${match.playersIds.length} de ${match.maxPlayers} entraram';
+      return Column(
+        children: [
+          CircularProgressIndicator(color: AppColors.black),
+          Text(
+            t.roomLobby.playersJoined(
+              current: match.playersIds.length,
+              max: match.maxPlayers,
+            ),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.cormorantInfant,
+              fontWeight: FontWeight.w500,
+              fontSize: AppFontSize.titleSmall,
+              color: AppColors.black,
+            ),
+          ),
+        ],
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final strings = context.l10n;
     final matchController = widget.matchController;
 
     return Scaffold(
@@ -56,120 +80,102 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
 
           return matchController.isHost
               ? Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox.shrink(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const SizedBox.shrink(),
 
-                  Text(
-                    strings.shareQrCodeInstruction,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: AppFonts.cormorantInfant,
-                      fontWeight: FontWeight.bold,
-                      fontSize: AppFontSize.titleLarge,
-                      color: AppColors.black,
+                        Text(
+                          t.roomLobby.shareQrCodeInstruction,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: AppFonts.cormorantInfant,
+                            fontWeight: FontWeight.bold,
+                            fontSize: AppFontSize.titleLarge,
+                            color: AppColors.black,
+                          ),
+                        ),
+
+                        Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: AppColors.backgroundClearer,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: QrImageView(
+                                data: widget.roomCode ?? '',
+                                version: QrVersions
+                                    .auto, // Calcula automaticamente a densidade do QR
+                                size: 180.0,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Column(
+                          children: [
+                            _numberOfPlayers(),
+
+                            const SizedBox(height: 24),
+
+                            if (matchController.allPlayersJoinMatch())
+                              CustomElevatedButton(
+                                text: t.roomLobby.startButton,
+                                onPressed: () async {
+                                  await matchController.startMatch();
+                                  if (!context.mounted) return;
+                                  context.pushNamed(AppRoutes.game);
+                                },
+                              ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-
-                  Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: AppColors.backgroundClearer,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: QrImageView(
-                          data: widget.roomCode ?? '',
-                          version: QrVersions.auto, // Calcula automaticamente a densidade do QR
-                          size: 180.0,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  Column(
-                    children: [
-                      Text(
-                        _numberOfPlayers(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: AppFonts.cormorantInfant,
-                          fontWeight: FontWeight.w500,
-                          fontSize: AppFontSize.bodyLargeX,
-                          color: AppColors.black,
-                        ),
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      if (matchController.allPlayersJoinMatch())
-                        CustomElevatedButton(
-                          text: strings.startButton,
-                          onPressed: () async {
-                            await matchController.startMatch();
-                            if (!context.mounted) return;
-                            context.pushNamed(AppRoutes.game);
-                          },
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          )
+                )
               : Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox.shrink(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const SizedBox.shrink(),
 
-                  Column(
-                    children: [
-                      Text(
-                        'Aguarde',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: AppFonts.cormorantInfant,
-                          fontWeight: FontWeight.bold,
-                          fontSize: AppFontSize.displaySmall,
-                          color: AppColors.black,
+                        Column(
+                          children: [
+                            Text(
+                              t.roomLobby.wait,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: AppFonts.cormorantInfant,
+                                fontWeight: FontWeight.bold,
+                                fontSize: AppFontSize.displaySmall,
+                                color: AppColors.black,
+                              ),
+                            ),
+
+                            Text(
+                              t.roomLobby.playersStillJoining,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: AppFonts.cormorantInfant,
+                                fontWeight: FontWeight.bold,
+                                fontSize: AppFontSize.titleMedium,
+                                color: AppColors.black,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
 
-                      Text(
-                        'Os jogadores ainda estão entrando na partida...',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: AppFonts.cormorantInfant,
-                          fontWeight: FontWeight.bold,
-                          fontSize: AppFontSize.titleMedium,
-                          color: AppColors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  Text(
-                    _numberOfPlayers(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: AppFonts.cormorantInfant,
-                      fontWeight: FontWeight.w500,
-                      fontSize: AppFontSize.titleSmall,
-                      color: AppColors.black,
+                        _numberOfPlayers(),
+                      ],
                     ),
                   ),
-
-                ],
-              ),
-            ),
-          );
+                );
         },
       ),
     );

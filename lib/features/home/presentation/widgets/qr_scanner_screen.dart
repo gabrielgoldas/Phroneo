@@ -7,6 +7,7 @@ import 'package:phroneo/features/home/presentation/widgets/scanner_overlay_paint
 
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
+import '../../../../i18n/strings.g.dart';
 
 class QrScannerScreen extends StatefulWidget {
   const QrScannerScreen({super.key});
@@ -38,7 +39,6 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
               onDetect: (BarcodeCapture capture) {
                 if (_isScanned) return;
 
-                // Get codes list
                 final List<Barcode> barcodes = capture.barcodes;
 
                 if (barcodes.isNotEmpty) {
@@ -57,12 +57,12 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
           ),
 
           Positioned(
-            bottom: MediaQuery.of(context).size.height * 0.15, // 15% acima do fim da tela
+            bottom: MediaQuery.of(context).size.height * 0.15,
             left: 0,
             right: 0,
-            child: const Center(
+            child: Center(
               child: Text(
-                'Alinhe o QR Code no centro',
+                t.homePage.alignQrCode,
                 style: TextStyle(
                   fontFamily: AppFonts.cormorantInfant,
                   fontWeight: FontWeight.bold,

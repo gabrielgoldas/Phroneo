@@ -7,8 +7,8 @@ import 'package:phroneo/features/home/presentation/controller/match_controller.d
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
-import '../../../../core/utils/localization_build_context.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
+import '../../../../i18n/strings.g.dart';
 
 class CreateMatchMenuBottomSheet extends StatefulWidget {
   const CreateMatchMenuBottomSheet({super.key});
@@ -55,8 +55,6 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final strings = context.l10n;
-
     return matchController.isLoading
         ? const Center(child: CircularProgressIndicator())
         : SafeArea(
@@ -67,7 +65,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              strings.create_match,
+              t.homePage.create_match,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: AppFontSize.titleMedium,
@@ -80,7 +78,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
             const SizedBox(height: 24),
 
             Text(
-              strings.player_count_question,
+              t.homePage.player_count_question,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: AppFontSize.titleSmall,
@@ -129,7 +127,7 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
             const SizedBox(height: 18),
 
             CustomElevatedButton(
-                text: strings.confirm_creation,
+                text: t.homePage.confirm_creation,
                 onPressed: () {
                   matchController.createMatch(context, selectedPlayers);
                 }

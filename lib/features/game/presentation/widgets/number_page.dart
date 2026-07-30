@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:phroneo/core/utils/localization_build_context.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
+import '../../../../i18n/strings.g.dart';
 
 class NumberPage extends StatelessWidget {
   final int number;
@@ -17,7 +17,7 @@ class NumberPage extends StatelessWidget {
       children: [
 
         Text(
-          context.l10n.yourNumberIs,
+          t.gamePage.yourNumberIs,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: AppFonts.marcellus,

@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/theme/app_font_size.dart';
 import 'package:phroneo/core/theme/app_fonts.dart';
-import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
+import 'package:phroneo/i18n/strings.g.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../core/widgets/custom_outlined_button.dart';
@@ -61,7 +61,6 @@ class _RoundResultPageState extends State<RoundResultPage> {
 
   @override
   Widget build(BuildContext context) {
-    final strings = context.l10n;
     final bool isVictory = _isVictory() ?? false;
 
     return Scaffold(
@@ -86,8 +85,8 @@ class _RoundResultPageState extends State<RoundResultPage> {
                 children: [
                   Text(
                     isVictory
-                        ? strings.congratulationsTitle
-                        : strings.tooBadTitle,
+                        ? t.orderingPage.congratulationsTitle
+                        : t.orderingPage.tooBadTitle,
                     style: TextStyle(
                       fontFamily: AppFonts.cinzel,
                       fontSize: AppFontSize.bodyLarge,
@@ -99,7 +98,9 @@ class _RoundResultPageState extends State<RoundResultPage> {
                   ),
 
                   Text(
-                    isVictory ? strings.victoryMessage : strings.defeatMessage,
+                    isVictory
+                        ? t.orderingPage.victoryMessage
+                        : t.orderingPage.defeatMessage,
                     style: TextStyle(
                       fontFamily: AppFonts.cinzel,
                       fontSize: AppFontSize.display,
@@ -131,7 +132,7 @@ class _RoundResultPageState extends State<RoundResultPage> {
                   ? Column(
                       children: [
                         CustomOutlinedButton(
-                          text: strings.leave,
+                          text: t.orderingPage.leave,
                           fontColor: isVictory
                               ? AppColors.primaryColor
                               : AppColors.gray200,
@@ -145,7 +146,7 @@ class _RoundResultPageState extends State<RoundResultPage> {
                         ),
 
                         CustomElevatedButton(
-                          text: strings.newRoundButton,
+                          text: t.orderingPage.newRoundButton,
                           backgroundColor: isVictory
                               ? AppColors.primaryColor
                               : AppColors.white,

@@ -1,13 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
-import 'package:phroneo/l10n/app_localizations.dart';
 
 import 'core/di/injection.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_colors.dart';
 import 'firebase_options.dart';
+import 'i18n/strings.g.dart';
 
 void main() async {
   // Prepare Flutter before using plugins
@@ -21,7 +23,17 @@ void main() async {
 
   setupDependencies();
 
-  runApp(PhroneoApp());
+  await LocaleSettings.useDeviceLocale();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
+  runApp(
+    TranslationProvider(
+      child: PhroneoApp(),
+    ),
+  );
 }
 
 class PhroneoApp extends StatelessWidget {
@@ -36,8 +48,9 @@ class PhroneoApp extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: router,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+      locale: TranslationProvider.of(context).flutterLocale,
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      supportedLocales: AppLocaleUtils.supportedLocales,
       // Global theme configuration
       theme: ThemeData(
         useMaterial3: true,

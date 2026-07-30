@@ -6,8 +6,8 @@ import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/core/widgets/custom_outlined_button.dart';
 import 'package:phroneo/features/onboarding/presentation/widgets/tutorial_page.dart';
 import 'package:phroneo/features/onboarding/repository/onboarding_repository.dart';
+import 'package:phroneo/i18n/strings.g.dart';
 
-import '../../../../core/utils/localization_build_context.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 
 class Onboarding extends StatefulWidget {
@@ -33,7 +33,6 @@ class _OnboardingState extends State<Onboarding> {
 
   @override
   Widget build(BuildContext context) {
-    final strings = context.l10n;
     final allOnboardingData = widget._onboardingRepository.allOnboardingData;
 
     return Scaffold(
@@ -80,7 +79,7 @@ class _OnboardingState extends State<Onboarding> {
 
           (currentPage > 0) ?
           CustomOutlinedButton(
-              text: strings.previous,
+              text: t.onboardingPage.previous,
               onPressed: () {
                 if (currentPage > 0) {
                   _pageController.previousPage(
@@ -95,13 +94,13 @@ class _OnboardingState extends State<Onboarding> {
 
           currentPage == allOnboardingData.length - 1 ?
           CustomElevatedButton(
-            text: strings.ready,
+            text: t.onboardingPage.ready,
             onPressed: () {
               context.goNamed(AppRoutes.home);
               },
           ) :
           CustomElevatedButton(
-            text: strings.next,
+            text: t.onboardingPage.next,
             onPressed: () {
               if (currentPage < allOnboardingData.length - 1) {
                 _pageController.nextPage(

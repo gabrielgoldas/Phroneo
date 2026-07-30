@@ -11,7 +11,7 @@ import 'package:phroneo/features/onboarding/presentation/pages/onboarding_page.d
 import 'package:phroneo/features/auth/presentation/pages/login_page.dart';
 import 'package:phroneo/features/onboarding/repository/onboarding_repository.dart';
 import 'package:phroneo/features/ordering/presentation/pages/ordering_page.dart';
-import 'package:phroneo/features/ordering/presentation/widgets/round_result_page.dart';
+import 'package:phroneo/features/result/presentation/pages/round_result_page.dart';
 import 'package:phroneo/features/room_lobby/presentation/pages/room_lobby_page.dart';
 
 import '../constants/constants.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
-import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
 import 'package:phroneo/features/ordering/model/option.dart';
+import 'package:phroneo/i18n/strings.g.dart';
 
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_font_size.dart';
@@ -25,8 +25,6 @@ class _OrderingPage extends State<OrderingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final strings = context.l10n;
-
     return ListenableBuilder(
       listenable: widget.matchController,
       builder: (context, child) {
@@ -41,7 +39,7 @@ class _OrderingPage extends State<OrderingPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  strings.sortChoicesInstruction,
+                  t.orderingPage.sortChoicesInstruction,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: AppFonts.cinzel,
@@ -56,7 +54,7 @@ class _OrderingPage extends State<OrderingPage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        strings.highestNumberLabel,
+                        t.orderingPage.highestNumberLabel,
                         style: TextStyle(
                           fontFamily: AppFonts.cinzel,
                           fontSize: AppFontSize.bodySmall,
@@ -128,7 +126,7 @@ class _OrderingPage extends State<OrderingPage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        strings.lowestNumberLabel,
+                        t.orderingPage.lowestNumberLabel,
                         style: TextStyle(
                           fontFamily: AppFonts.cinzel,
                           fontSize: AppFontSize.bodySmall,
@@ -142,7 +140,7 @@ class _OrderingPage extends State<OrderingPage> {
 
                 if (widget.matchController.isHost)
                   CustomElevatedButton(
-                    text: strings.doneButton,
+                    text: t.orderingPage.doneButton,
                     onPressed: () async {
                       setState(() => showNumbers = true);
                       await widget.matchController.finishRoundAndSaveResult();

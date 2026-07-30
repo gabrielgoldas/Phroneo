@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
-import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
+import '../../../../i18n/strings.g.dart';
 import '../../service/auth_service.dart';
 
 class ProfileMenuBottomSheet extends StatelessWidget {
@@ -26,7 +26,6 @@ class ProfileMenuBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final strings = context.l10n;
     final authService = getIt<AuthService>();
     final photoUrl = authService.currentUser?.photoURL;
     final displayName = authService.currentUser?.displayName;
@@ -49,7 +48,7 @@ class ProfileMenuBottomSheet extends StatelessWidget {
             const SizedBox(height: 12),
 
             Text(
-              displayName ?? "Anônimo",
+              displayName ?? t.authPage.anonymous,
               style: TextStyle(
               fontFamily: AppFonts.cinzel,
               fontSize: AppFontSize.bodyLarge,
@@ -66,7 +65,7 @@ class ProfileMenuBottomSheet extends StatelessWidget {
               tiles: [
                 ListTile(
                   leading: const Icon(Icons.help_outline_outlined),
-                  title: Text(strings.how_to_play),
+                  title: Text(t.authPage.how_to_play),
                   onTap: () {
                     context.pop();
                     context.goNamed(AppRoutes.onboarding);
@@ -74,7 +73,7 @@ class ProfileMenuBottomSheet extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(Icons.logout_outlined),
-                  title: Text(strings.exit),
+                  title: Text(t.authPage.exit),
                   onTap: () {
                     context.pop();
                     authController.logout();

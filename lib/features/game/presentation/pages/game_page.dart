@@ -35,13 +35,15 @@ class _GamePage extends State<GamePage> {
     widget.matchController.addListener(_onMatchStateChanged);
   }
 
-  void _onMatchStateChanged() {
+  void _onMatchStateChanged() async {
     if (
         widget.matchController.currentMatch?.status == StatusMatch.finishedRound
         && !widget.matchController.isHost
         && !_isNavigating
     ) {
-      _isNavigating = true;
+      setState(() => _isNavigating = true );
+
+      await Future.delayed(const Duration(seconds: 2));
       if (mounted) context.goNamed(AppRoutes.roundResult);
     }
   }
@@ -67,7 +69,11 @@ class _GamePage extends State<GamePage> {
       duration: transitionDuration,
       curve: Curves.easeInOut,
       color: backgroundColor,
-      child: Scaffold(
+      child: _isNavigating
+          ? Center(
+        child: const CircularProgressIndicator(color: AppColors.white),
+      )
+          : Scaffold(
         backgroundColor: Colors.transparent,
         appBar: const CustomAppBar(
           fontColor: AppColors.background,
@@ -98,14 +104,14 @@ class _GamePage extends State<GamePage> {
                       switchOutCurve: Curves.easeOut,
                       child: showNumberPage
                           ? NumberPage(
-                              key: ValueKey('number_page'),
-                              number:  matchController.getSecretNumber(),
-                          )
+                        key: ValueKey('number_page'),
+                        number:  matchController.getSecretNumber(),
+                      )
                           : PhrasePage(
-                              key: ValueKey('phrase_page'),
-                              phrase: matchController.currentMatch!.currentPhrase,
-                              isHost: matchController.isHost,
-                          ),
+                        key: ValueKey('phrase_page'),
+                        phrase: matchController.currentMatch!.currentPhrase,
+                        isHost: matchController.isHost,
+                      ),
                     );
                   },
                 ),

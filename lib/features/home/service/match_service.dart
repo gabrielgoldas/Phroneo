@@ -23,6 +23,7 @@ class MatchService {
     required this._phraseRepository
   });
 
+  // TODO -> Improve
   String _generateRoomCode() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     final random = Random();
@@ -37,8 +38,7 @@ class MatchService {
       final user = _authService.currentUser;
       if (user == null) return null;
 
-      // final roomCode = _generateRoomCode(); TODO -> DESCOMENTAR
-      final roomCode = 'LHY9PV';
+      final roomCode = _generateRoomCode();
 
       final initialPhrase = PhraseModel(
         text: 'O que você levaria para uma ilha deserta?',
@@ -195,11 +195,7 @@ class MatchService {
       final user = _authService.currentUser;
       if (user == null) return false;
 
-      // final roomCode = _generateRoomCode(); TODO -> DESCOMENTAR
-      final roomCode = 'LHY9PV';
-
       final phrase = _phraseRepository.getRandomPhrase();
-
 
       await _firestore.collection('matches').doc(roomCode).update({
         'lastRoundVictory': null,

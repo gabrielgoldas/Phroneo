@@ -3,22 +3,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/features/home/model/phrase_model.dart';
 import 'package:phroneo/core/router/app_routes.dart';
-import 'package:phroneo/core/utils/localization_build_context.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
+import '../../../../i18n/strings.g.dart';
 
 class PhrasePage extends StatelessWidget {
   final PhraseModel phrase;
   final bool isHost;
 
-  const PhrasePage({
-    super.key,
-    required this.phrase,
-    required this.isHost
-  });
+  const PhrasePage({super.key, required this.phrase, required this.isHost});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +24,7 @@ class PhrasePage extends StatelessWidget {
         const SizedBox.shrink(),
 
         Text(
-          context.l10n.roundPhrase,
+          t.gamePage.roundPhrase,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: AppFonts.marcellus,
@@ -40,7 +36,6 @@ class PhrasePage extends StatelessWidget {
 
         Column(
           children: [
-
             Text(
               '"${phrase.text}"',
               textAlign: TextAlign.center,
@@ -79,15 +74,15 @@ class PhrasePage extends StatelessWidget {
         Column(
           children: [
             SvgPicture.asset(
-                'assets/images/long_press.svg',
-                width: 46,
+              'assets/images/long_press.svg',
+              width: 46,
               colorFilter: const ColorFilter.mode(
                 AppColors.gray200,
                 BlendMode.srcIn,
               ),
             ),
             Text(
-              context.l10n.tapAndHoldToSeeNumber,
+              t.gamePage.tapAndHoldToSeeNumber,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: AppFonts.marcellus,
@@ -99,13 +94,14 @@ class PhrasePage extends StatelessWidget {
           ],
         ),
 
-        if (isHost)
-        CustomElevatedButton(
-            text: context.l10n.sortChoices,
-            backgroundColor: AppColors.white,
-            fontColor: AppColors.black,
-            onPressed: () => context.pushNamed(AppRoutes.ordering)
-        )
+        isHost
+            ? CustomElevatedButton(
+                text: t.gamePage.sortChoices,
+                backgroundColor: AppColors.white,
+                fontColor: AppColors.black,
+                onPressed: () => context.pushNamed(AppRoutes.ordering),
+              )
+            : const SizedBox.shrink(),
       ],
     );
   }
