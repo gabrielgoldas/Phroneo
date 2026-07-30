@@ -40,20 +40,21 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
   @override
   Widget build(BuildContext context) {
     final strings = context.l10n;
+    final matchController = widget.matchController;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(),
       body: ListenableBuilder(
-        listenable: widget.matchController,
+        listenable: matchController,
         builder: (context, child) {
-          final match = widget.matchController.currentMatch;
+          final match = matchController.currentMatch;
 
           if (match == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return widget.matchController.isHost
+          return matchController.isHost
               ? Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -105,11 +106,11 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
 
                       const SizedBox(height: 24),
 
-                      if (widget.matchController.allPlayersJoinMatch())
+                      if (matchController.allPlayersJoinMatch())
                         CustomElevatedButton(
                           text: strings.startButton,
                           onPressed: () async {
-                            await widget.matchController.startMatch();
+                            await matchController.startMatch();
                             if (!context.mounted) return;
                             context.pushNamed(AppRoutes.game);
                           },

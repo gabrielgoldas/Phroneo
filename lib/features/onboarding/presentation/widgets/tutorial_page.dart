@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:phroneo/core/widgets/custom_title.dart';
-import 'package:phroneo/features/onboarding/data/entities/onboarding_page_data.dart';
+import 'package:phroneo/features/onboarding/model/onboarding_page_model.dart';
 
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
 
 class TutorialPage extends StatelessWidget {
-  final OnboardingPageData page;
+  final OnboardingModel page;
 
   const TutorialPage({
     super.key,

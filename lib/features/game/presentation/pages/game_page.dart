@@ -55,6 +55,7 @@ class _GamePage extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     final myColor = Color(widget.matchController.getMyColor());
+    final matchController = widget.matchController;
 
     final backgroundColor = showNumberPage
         ? HSLColor.fromColor(myColor).withLightness(0.35).toColor()
@@ -85,9 +86,9 @@ class _GamePage extends State<GamePage> {
                   vertical: 54.0,
                 ),
                 child: ListenableBuilder(
-                  listenable: widget.matchController,
+                  listenable: matchController,
                   builder: (context, child) {
-                    if (widget.matchController.currentMatch == null) {
+                    if (matchController.currentMatch == null) {
                       return const CircularProgressIndicator();
                     }
 
@@ -98,12 +99,12 @@ class _GamePage extends State<GamePage> {
                       child: showNumberPage
                           ? NumberPage(
                               key: ValueKey('number_page'),
-                              number:  widget.matchController.getSecretNumber(),
+                              number:  matchController.getSecretNumber(),
                           )
                           : PhrasePage(
                               key: ValueKey('phrase_page'),
-                              phrase: widget.matchController.currentMatch!.currentPhrase,
-                              isHost: widget.matchController.isHost,
+                              phrase: matchController.currentMatch!.currentPhrase,
+                              isHost: matchController.isHost,
                           ),
                     );
                   },

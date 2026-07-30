@@ -21,11 +21,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final strings = context.l10n;
+    final authController = widget.authController;
 
     return AnimatedBuilder(
-      animation: widget.authController,
+      animation: authController,
       builder: (context, _) {
-        return widget.authController.isLoading
+        return authController.isLoading
             ? const Center(child: CircularProgressIndicator())
             : Scaffold(
                 backgroundColor: AppColors.background,
@@ -74,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                           filePath: 'assets/icons/google_icon.svg',
                           labelText: context.l10n.login_google,
                           onPressed: () {
-                            widget.authController.login(context);
+                            authController.login(context);
                           },
                         ),
                       ],
