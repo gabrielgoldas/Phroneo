@@ -7,11 +7,11 @@ In this project, I put into practice my knowledge of modern cross-platform devel
 ## Screenshots
 
 <p align="center">
-  <img src="screenshots/img1.jpeg" width="200"/>
-  <img src="screenshots/img2.jpeg" width="200"/>
-  <img src="screenshots/img3.jpeg" width="200"/>
-  <img src="screenshots/img4.png"  width="200"/>
-  <img src="screenshots/img5.png"  width="200"/>
+  <img src="screenshots/img1.jpeg" width="150"/>
+  <img src="screenshots/img2.jpeg" width="150"/>
+  <img src="screenshots/img3.jpeg" width="150"/>
+  <img src="screenshots/img4.png"  width="150"/>
+  <img src="screenshots/img5.png"  width="150"/>
 </p>
 
 ---
