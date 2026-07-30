@@ -23,13 +23,41 @@ class MatchService {
     required this._phraseRepository
   });
 
-  // TODO -> Improve
   String _generateRoomCode() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    final random = Random();
+    final random = Random.secure();
     return String.fromCharCodes(Iterable.generate(
       6, (_) => chars.codeUnitAt(random.nextInt(chars.length)),
     ));
+  }
+
+  List<int> _generatePlayerNumbers(int maxNumberOfPlayers) {
+    final random                = Random();
+    final int limit             = maxNumberOfPlayers.clamp(1, 100);
+    final List<int> allNumbers  = List.generate(100, (index) => index + 1);
+    allNumbers.shuffle(random);
+    return allNumbers.take(limit).toList();
+  }
+
+  List<int> _getPlayerColors(int maxNumberOfPlayers) {
+    final random = Random();
+    final listCopy = List<int>.from(AppColors.playerPaletteValues);
+    listCopy.shuffle(random);
+    final limit = maxNumberOfPlayers.clamp(1, listCopy.length);
+    return listCopy.take(limit).toList();
+  }
+
+  Stream<MatchModel?> streamMatch(String roomCode) {
+    return _firestore
+        .collection('matches')
+        .doc(roomCode)
+        .snapshots() // O stream original do Firebase
+        .map((snapshot) { // O .map transforma o que vem do banco no Model
+      if (snapshot.exists) {
+        return MatchModel.fromFirestore(snapshot);
+      }
+      return null; // Caso a sala seja deletada
+    });
   }
 
   Future<String?> createMatch(int selectedPlayers) async {
@@ -39,12 +67,7 @@ class MatchService {
       if (user == null) return null;
 
       final roomCode = _generateRoomCode();
-
-      final initialPhrase = PhraseModel(
-        text: 'O que você levaria para uma ilha deserta?',
-        biggestNumber: '100 -> Não pode faltar',
-        smallestNumber: '1 -> Desnecessário',
-      );
+      final initialPhrase = _phraseRepository.getRandomPhrase();
 
       final newMatch = MatchModel(
           id: roomCode,
@@ -70,33 +93,28 @@ class MatchService {
     }
   }
 
-  Stream<MatchModel?> streamMatch(String roomCode) {
-    return _firestore
-        .collection('matches')
-        .doc(roomCode)
-        .snapshots() // O stream original do Firebase
-        .map((snapshot) { // O .map transforma o que vem do banco no Model
-      if (snapshot.exists) {
-        return MatchModel.fromFirestore(snapshot);
+  Future<bool> newRoundMatch(String roomCode, int totalPlayers) async {
+    try {
+
+      final user = _authService.currentUser;
+      if (user == null) return false;
+
+      final phrase = _phraseRepository.getRandomPhrase();
+
+      await _firestore.collection('matches').doc(roomCode).update({
+        'lastRoundVictory': null,
+        'currentPhrase': phrase.toMap(),
+        'secretNumbers': _generatePlayerNumbers(totalPlayers),
+        'status': StatusMatch.playing.name
+      });
+
+      return true;
+    } catch (e) {
+      if (kDebugMode) {
+        print('Erro ao criar partida: $e');
       }
-      return null; // Caso a sala seja deletada
-    });
-  }
-
-  List<int> _generatePlayerNumbers(int maxNumberOfPlayers) {
-    final random                = Random();
-    final int limit             = maxNumberOfPlayers.clamp(1, 100);
-    final List<int> allNumbers  = List.generate(100, (index) => index + 1);
-    allNumbers.shuffle(random);
-    return allNumbers.take(limit).toList();
-  }
-
-  List<int> _getPlayerColors(int maxNumberOfPlayers) {
-    final random = Random();
-    final listCopy = List<int>.from(AppColors.playerPaletteValues);
-    listCopy.shuffle(random);
-    final limit = maxNumberOfPlayers.clamp(1, listCopy.length);
-    return listCopy.take(limit).toList();
+      return false;
+    }
   }
 
   Future<bool> joinMatch(String roomCode) async {
@@ -157,6 +175,19 @@ class MatchService {
     }
   }
 
+  Future<void> updateMyPlayerStats(String currentUserId, MatchModel currentMatch) async {
+    try {
+      await _firestore.collection('players').doc(currentUserId).update({
+        'wins': FieldValue.increment(currentMatch.wins),
+        'defeats': FieldValue.increment(currentMatch.defeats),
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        print('Erro ao atualizar estatísticas do jogador: $e');
+      }
+    }
+  }
+
   Future<bool> leaveAndCloseCurrentMatch(String roomCode) async {
     try {
 
@@ -176,40 +207,4 @@ class MatchService {
     }
   }
 
-  Future<void> updateMyPlayerStats(String currentUserId, MatchModel currentMatch) async {
-    try {
-      await _firestore.collection('players').doc(currentUserId).update({
-        'wins': FieldValue.increment(currentMatch.wins),
-        'defeats': FieldValue.increment(currentMatch.defeats),
-      });
-    } catch (e) {
-      if (kDebugMode) {
-        print('Erro ao atualizar estatísticas do jogador: $e');
-      }
-    }
-  }
-
-  Future<bool> newRoundMatch(String roomCode, int totalPlayers) async {
-    try {
-
-      final user = _authService.currentUser;
-      if (user == null) return false;
-
-      final phrase = _phraseRepository.getRandomPhrase();
-
-      await _firestore.collection('matches').doc(roomCode).update({
-        'lastRoundVictory': null,
-        'currentPhrase': phrase.toMap(),
-        'secretNumbers': _generatePlayerNumbers(totalPlayers),
-        'status': StatusMatch.playing.name
-      });
-
-      return true;
-    } catch (e) {
-      if (kDebugMode) {
-        print('Erro ao criar partida: $e');
-      }
-      return false;
-    }
-  }
 }

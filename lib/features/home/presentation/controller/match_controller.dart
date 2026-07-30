@@ -28,28 +28,39 @@ class MatchController extends ChangeNotifier {
 
   MatchController({required this._matchService, required this._authService});
 
-  void listenToMatch(String roomCode) {
-    _matchSubscription?.cancel();
-    final normalizedCode = roomCode.toUpperCase();
+  List<Option> getOptions() => _options;
 
-    _matchSubscription = _matchService.streamMatch(normalizedCode).listen((newMatch) {
-      currentMatch = newMatch;
+  bool get isHost {
+    final user = _authService.currentUser;
+    if (user == null || currentMatch == null) return false;
+    return currentMatch!.hostId == user.uid;
+  }
 
-      if (newMatch != null) {
-        _initOptions(newMatch);
+  int _getMyIndex() {
+    if (currentMatch == null) return -1;
 
-        if (newMatch.status == StatusMatch.playing || newMatch.status == StatusMatch.lobby) {
-          _hasProcessedCurrentRound = false;
-        }
+    final user = _authService.currentUser;
+    if (user == null) return -1;
 
-        if (newMatch.status == StatusMatch.finished && !_hasProcessedCurrentRound) {
-          _hasProcessedCurrentRound = true;
-          _updateMyPlayerStats(newMatch);
-        }
+    return currentMatch!.playersIds.indexOf(user.uid);
+  }
+
+  Future<void> _updateMyPlayerStats(MatchModel match) async {
+    final currentMatch  = this.currentMatch;
+    final currentUserId = _authService.currentUser?.uid;
+    if (currentUserId == null && currentMatch == null) return;
+    await _matchService.updateMyPlayerStats(currentUserId!, currentMatch!);
+  }
+
+  bool _getResult() {
+    for (int i = 0; i < _options.length - 1; i++) {
+      // Se o número atual for MENOR que o próximo, a ordem do maior pro menor quebrou
+      if (_options[i].number < _options[i + 1].number) {
+        return false;
       }
+    }
 
-      notifyListeners();
-    });
+    return true;
   }
 
   void _initOptions(MatchModel match) {
@@ -75,17 +86,33 @@ class MatchController extends ChangeNotifier {
 
     _options = List.generate(
       length,
-      (index) =>
+          (index) =>
           Option(number: numbers[index], color: Color(colorsAsInts[index])),
     );
   }
 
-  void leaveMatch() {
+  void listenToMatch(String roomCode) {
     _matchSubscription?.cancel();
-    currentMatch = null;
-    currentRoomCode = null;
-    _options = [];
-    notifyListeners();
+    final normalizedCode = roomCode.toUpperCase();
+
+    _matchSubscription = _matchService.streamMatch(normalizedCode).listen((newMatch) {
+      currentMatch = newMatch;
+
+      if (newMatch != null) {
+        _initOptions(newMatch);
+
+        if (newMatch.status == StatusMatch.playing || newMatch.status == StatusMatch.lobby) {
+          _hasProcessedCurrentRound = false;
+        }
+
+        if (newMatch.status == StatusMatch.finished && !_hasProcessedCurrentRound) {
+          _hasProcessedCurrentRound = true;
+          _updateMyPlayerStats(newMatch);
+        }
+      }
+
+      notifyListeners();
+    });
   }
 
   Future createMatch(BuildContext context, int selectedPlayers) async {
@@ -139,88 +166,8 @@ class MatchController extends ChangeNotifier {
     }
   }
 
-  int getSecretNumber() {
-    final myIndex = _getMyIndex();
-
-    if (myIndex != -1 && currentMatch!.secretNumbers.isNotEmpty) {
-      if (myIndex < currentMatch!.secretNumbers.length) {
-        return currentMatch!.secretNumbers[myIndex];
-      }
-    }
-
-    return 0;
-  }
-
-  int getMyColor() {
-    final myIndex = _getMyIndex();
-
-    if (myIndex != -1 && currentMatch!.playerColors.isNotEmpty) {
-      if (myIndex < currentMatch!.playerColors.length) {
-        return currentMatch!.playerColors[myIndex];
-      }
-    }
-
-    return 0;
-  }
-
-  int _getMyIndex() {
-    if (currentMatch == null) return -1;
-
-    final user = _authService
-        .currentUser; // Ou pegando do _authService injetado no controller
-    if (user == null) return -1;
-
-    return currentMatch!.playersIds.indexOf(user.uid);
-  }
-
-  // 3. O getter agora só entrega a lista 'viva' salva no controller
-  List<Option> getOptions() => _options;
-
-  // 4. O reordenador agora altera diretamente a lista 'viva'!
-  void onReorder(int oldIndex, int newIndex) {
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
-    }
-
-    final Option item = _options.removeAt(oldIndex);
-    _options.insert(newIndex, item);
-
-    notifyListeners(); // O ListenableBuilder vai re-renderizar a lista na nova ordem!
-  }
-
-  bool allPlayersJoinMatch() {
-    final currentMatch = this.currentMatch;
-
-    if (currentMatch != null) {
-      final totalPlayersJoined = currentMatch.playersIds.length;
-      final maxPlayersLimit = currentMatch.maxPlayers;
-
-      if (totalPlayersJoined == maxPlayersLimit) return true;
-    }
-
-    return false;
-  }
-
-  bool get isHost {
-    final user = _authService.currentUser;
-    if (user == null || currentMatch == null) return false;
-    return currentMatch!.hostId == user.uid;
-  }
-
-  bool getResult() {
-    for (int i = 0; i < _options.length - 1; i++) {
-      // Se o número atual for MENOR que o próximo, a ordem do maior pro menor quebrou
-      if (_options[i].number < _options[i + 1].number) {
-
-        return false;
-      }
-    }
-
-    return true;
-  }
-
   Future<bool> finishRoundAndSaveResult() async {
-    final isVictory = getResult();
+    final isVictory = _getResult();
 
     if (isHost && currentRoomCode != null) {
       try {
@@ -248,17 +195,66 @@ class MatchController extends ChangeNotifier {
     return false;
   }
 
-  Future<void> _updateMyPlayerStats(MatchModel match) async {
-    final currentMatch  = this.currentMatch;
-    final currentUserId = _authService.currentUser?.uid;
-    if (currentUserId == null && currentMatch == null) return;
-    await _matchService.updateMyPlayerStats(currentUserId!, currentMatch!);
-  }
-
   Future<bool> newRoundMatch() async {
     if (isHost && currentRoomCode != null && totalPlayers != null) {
       return await _matchService.newRoundMatch(currentRoomCode!, totalPlayers!);
     }
+    return false;
+  }
+
+  void leaveMatch() {
+    _matchSubscription?.cancel();
+    currentMatch = null;
+    currentRoomCode = null;
+    _options = [];
+    notifyListeners();
+  }
+
+  int getSecretNumber() {
+    final myIndex = _getMyIndex();
+
+    if (myIndex != -1 && currentMatch!.secretNumbers.isNotEmpty) {
+      if (myIndex < currentMatch!.secretNumbers.length) {
+        return currentMatch!.secretNumbers[myIndex];
+      }
+    }
+
+    return 0;
+  }
+
+  int getMyColor() {
+    final myIndex = _getMyIndex();
+
+    if (myIndex != -1 && currentMatch!.playerColors.isNotEmpty) {
+      if (myIndex < currentMatch!.playerColors.length) {
+        return currentMatch!.playerColors[myIndex];
+      }
+    }
+
+    return 0;
+  }
+
+  void onReorder(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+
+    final Option item = _options.removeAt(oldIndex);
+    _options.insert(newIndex, item);
+
+    notifyListeners();
+  }
+
+  bool allPlayersJoinMatch() {
+    final currentMatch = this.currentMatch;
+
+    if (currentMatch != null) {
+      final totalPlayersJoined = currentMatch.playersIds.length;
+      final maxPlayersLimit = currentMatch.maxPlayers;
+
+      if (totalPlayersJoined == maxPlayersLimit) return true;
+    }
+
     return false;
   }
 

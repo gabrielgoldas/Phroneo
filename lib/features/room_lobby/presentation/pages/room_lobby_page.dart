@@ -67,7 +67,9 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
   Widget build(BuildContext context) {
     final matchController = widget.matchController;
 
-    return Scaffold(
+    return matchController.isLoading
+        ? Center(child: customLoading(width: 100))
+        : Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(),
       body: ListenableBuilder(
@@ -81,102 +83,102 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
 
           return matchController.isHost
               ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const SizedBox.shrink(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const SizedBox.shrink(),
 
-                        Text(
-                          t.roomLobby.shareQrCodeInstruction,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: AppFonts.cormorantInfant,
-                            fontWeight: FontWeight.bold,
-                            fontSize: AppFontSize.titleLarge,
-                            color: AppColors.black,
-                          ),
-                        ),
-
-                        Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: AppColors.backgroundClearer,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: QrImageView(
-                                data: widget.roomCode ?? '',
-                                version: QrVersions
-                                    .auto, // Calcula automaticamente a densidade do QR
-                                size: 180.0,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        Column(
-                          children: [
-                            _numberOfPlayers(),
-
-                            const SizedBox(height: 24),
-
-                            if (matchController.allPlayersJoinMatch())
-                              CustomElevatedButton(
-                                text: t.roomLobby.startButton,
-                                onPressed: () async {
-                                  await matchController.startMatch();
-                                  if (!context.mounted) return;
-                                  context.pushNamed(AppRoutes.game);
-                                },
-                              ),
-                          ],
-                        ),
-                      ],
+                  Text(
+                    t.roomLobby.shareQrCodeInstruction,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: AppFonts.cormorantInfant,
+                      fontWeight: FontWeight.bold,
+                      fontSize: AppFontSize.titleLarge,
+                      color: AppColors.black,
                     ),
                   ),
-                )
+
+                  Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundClearer,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: QrImageView(
+                          data: widget.roomCode ?? '',
+                          version: QrVersions
+                              .auto, // Calcula automaticamente a densidade do QR
+                          size: 180.0,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Column(
+                    children: [
+                      _numberOfPlayers(),
+
+                      const SizedBox(height: 24),
+
+                      if (matchController.allPlayersJoinMatch())
+                        CustomElevatedButton(
+                          text: t.roomLobby.startButton,
+                          onPressed: () async {
+                            await matchController.startMatch();
+                            if (!context.mounted) return;
+                            context.pushNamed(AppRoutes.game);
+                          },
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          )
               : Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const SizedBox.shrink(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const SizedBox.shrink(),
 
-                        Column(
-                          children: [
-                            Text(
-                              t.roomLobby.wait,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: AppFonts.cormorantInfant,
-                                fontWeight: FontWeight.bold,
-                                fontSize: AppFontSize.displaySmall,
-                                color: AppColors.black,
-                              ),
-                            ),
-
-                            Text(
-                              t.roomLobby.playersStillJoining,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: AppFonts.cormorantInfant,
-                                fontWeight: FontWeight.bold,
-                                fontSize: AppFontSize.titleMedium,
-                                color: AppColors.black,
-                              ),
-                            ),
-                          ],
+                  Column(
+                    children: [
+                      Text(
+                        t.roomLobby.wait,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: AppFonts.cormorantInfant,
+                          fontWeight: FontWeight.bold,
+                          fontSize: AppFontSize.displaySmall,
+                          color: AppColors.black,
                         ),
+                      ),
 
-                        _numberOfPlayers(),
-                      ],
-                    ),
+                      Text(
+                        t.roomLobby.playersStillJoining,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: AppFonts.cormorantInfant,
+                          fontWeight: FontWeight.bold,
+                          fontSize: AppFontSize.titleMedium,
+                          color: AppColors.black,
+                        ),
+                      ),
+                    ],
                   ),
-                );
+
+                  _numberOfPlayers(),
+                ],
+              ),
+            ),
+          );
         },
       ),
     );
