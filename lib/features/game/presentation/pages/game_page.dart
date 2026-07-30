@@ -7,6 +7,7 @@ import 'package:phroneo/features/home/presentation/controller/match_controller.d
 import '../../../../core/constants/constants.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/custom_loading.dart';
 import '../widgets/number_page.dart';
 
 class GamePage extends StatefulWidget {
@@ -71,7 +72,7 @@ class _GamePage extends State<GamePage> {
       color: backgroundColor,
       child: _isNavigating
           ? Center(
-        child: const CircularProgressIndicator(color: AppColors.white),
+        child: customLoading(width: 100, color: AppColors.white),
       )
           : Scaffold(
         backgroundColor: Colors.transparent,

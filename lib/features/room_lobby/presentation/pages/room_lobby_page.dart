@@ -10,6 +10,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
+import '../../../../core/widgets/custom_loading.dart';
 
 class RoomLobbyPage extends StatefulWidget {
   final MatchController matchController;
@@ -43,7 +44,7 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
     } else {
       return Column(
         children: [
-          CircularProgressIndicator(color: AppColors.black),
+          customLoading(color: AppColors.primaryColor),
           Text(
             t.roomLobby.playersJoined(
               current: match.playersIds.length,
@@ -75,7 +76,7 @@ class _RoomLobbyPageState extends State<RoomLobbyPage> {
           final match = matchController.currentMatch;
 
           if (match == null) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: customLoading());
           }
 
           return matchController.isHost
