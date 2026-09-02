@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:phroneo/core/constants/constants.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/features/home/model/match_model.dart';
-import 'package:phroneo/features/home/model/phrase_model.dart';
 import 'package:phroneo/features/home/repository/phrase_repository.dart';
 
 import '../../auth/service/auth_service.dart';

@@ -32,7 +32,11 @@ class AuthController extends ChangeNotifier {
 
     try {
       final isNewUser = await _authService.signInWithGoogle();
-      (isNewUser != null && isNewUser) ? context.pushNamed(AppRoutes.onboarding) : context.pushNamed(AppRoutes.home);
+      if (isNewUser != null && isNewUser && context.mounted) {
+        context.pushNamed(AppRoutes.onboarding);
+      } else if (context.mounted) {
+        context.pushNamed(AppRoutes.home);
+      }
 
     } on FirebaseAuthException catch(e) {
       ShowMessage(title: 'Error', message: e.message!,);
