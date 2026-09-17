@@ -4,10 +4,10 @@ import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/theme/app_font_size.dart';
 import 'package:phroneo/core/theme/app_fonts.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
-import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:phroneo/features/home/presentation/widgets/custom_elevated_icon_button.dart';
 
 import '../../../../i18n/strings.g.dart';
+import '../controller/auth_controller.dart';
 
 class LoginPage extends StatefulWidget {
   final AuthController authController;

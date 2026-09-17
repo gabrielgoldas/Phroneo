@@ -18,7 +18,7 @@ class AuthController extends ChangeNotifier {
   late StreamSubscription<User?> _subscription;
 
   AuthController({required this._authService}) {
-    _authService.authStateChanges.listen((firebaseUser) {
+    _subscription = _authService.authStateChanges.listen((firebaseUser) {
       user = firebaseUser;
       notifyListeners();
     });

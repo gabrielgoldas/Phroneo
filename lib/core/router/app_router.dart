@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/core/router/app_routes.dart';
-import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:phroneo/features/auth/presentation/controller/auth_controller.dart';
 import 'package:phroneo/features/game/presentation/pages/game_page.dart';
 import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
 import 'package:phroneo/features/home/presentation/pages/home_page.dart';

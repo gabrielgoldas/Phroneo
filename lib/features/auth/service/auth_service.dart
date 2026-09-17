@@ -1,20 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart';
-
-import '../model/player_model.dart';
+import 'package:phroneo/features/auth/repository/player_repository.dart';
 
 class AuthService {
 
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
-  final FirebaseFirestore _firestore;
+  final PlayerRepository _playerRepository;
 
   AuthService({
     required FirebaseAuth firebaseAuth,
     required this._googleSignIn,
-    required this._firestore,
+    required this._playerRepository,
   }) : _auth = firebaseAuth;
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
@@ -45,7 +43,7 @@ class AuthService {
       final isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
 
       if (isNewUser && userCredential.user != null) {
-        await _saveNewPlayerToFirestore(userCredential.user!);
+        await _playerRepository.saveNewPlayerToFirestore(userCredential.user!);
       }
 
       return isNewUser;
@@ -56,23 +54,6 @@ class AuthService {
     } catch (e) {
       if (kDebugMode) print('Google Sign In error: $e');
       rethrow;
-    }
-  }
-
-  Future<void> _saveNewPlayerToFirestore(User user) async {
-    final newPlayer = PlayerModel(
-      name: user.displayName ?? 'Jogador Misterioso',
-      photoUrl: user.photoURL ?? '',
-    );
-
-    try {
-      await _firestore
-          .collection('players')
-          .doc(user.uid)
-          .set(newPlayer.toFirestore());
-
-    } catch (e) {
-      if (kDebugMode) print('Erro ao salvar jogador no Firestore: $e');
     }
   }
 

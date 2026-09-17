@@ -1,28 +1,25 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/constants/constants.dart';
 import 'package:phroneo/features/auth/model/player_model.dart';
 import 'package:phroneo/features/home/model/match_model.dart';
 import 'package:phroneo/features/home/service/match_service.dart';
 import 'package:phroneo/features/ordering/model/option.dart';
 
-import '../../../../core/router/app_routes.dart';
 import '../../../auth/service/auth_service.dart';
 
 class MatchController extends ChangeNotifier {
   final MatchService _matchService;
   final AuthService _authService;
 
-  bool isLoading = false;
-  MatchModel? currentMatch;
-  PlayerModel? currentUser;
-  String? currentRoomCode;
-  int? totalPlayers;
-  List<Option> _options = [];
-  bool _hasProcessedCurrentRound = false;
+  bool          isLoading = false;
+  MatchModel?   currentMatch;
+  PlayerModel?  currentUser;
+  String?       currentRoomCode;
+  int?          totalPlayers;
+  List<Option>  _options = [];
+  bool          _hasProcessedCurrentRound = false;
 
   StreamSubscription<MatchModel?>? _matchSubscription;
 
@@ -115,68 +112,44 @@ class MatchController extends ChangeNotifier {
     });
   }
 
-  Future createMatch(BuildContext context, int selectedPlayers) async {
+  Future<String?> createMatch(int selectedPlayers) async {
     isLoading = true;
     notifyListeners();
 
     totalPlayers = selectedPlayers;
+    currentRoomCode = await _matchService.createMatch(selectedPlayers);
 
-    try {
-      currentRoomCode = await _matchService.createMatch(selectedPlayers);
-
-      if (currentRoomCode != null && context.mounted) {
-        listenToMatch(currentRoomCode!);
-        context.pushNamed(AppRoutes.roomLobby, extra: currentRoomCode);
-      } else {
-        if (!context.mounted) return;
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Falha ao Criar partida')));
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Erro ao criar partida: $e');
-      }
-    } finally {
-      isLoading = false;
-      notifyListeners();
+    if (currentRoomCode != null) {
+      listenToMatch(currentRoomCode!);
     }
+
+    isLoading = false;
+    notifyListeners();
+
+    return currentRoomCode;
   }
 
   Future<bool> joinMatch(String roomCode) async {
     isLoading = true;
     notifyListeners();
 
-    try {
-      final joinedRoom = await _matchService.joinMatch(roomCode);
-      if (joinedRoom) {
-        currentRoomCode = roomCode;
-        listenToMatch(roomCode);
-        return true;
-      }
-      return false;
-    } catch (e) {
-      if (kDebugMode) {
-        print('Erro ao entrar partida: $e');
-      }
-      return false;
-    } finally {
-      isLoading = false;
-      notifyListeners();
+    final joinedRoom = await _matchService.joinMatch(roomCode);
+    if (joinedRoom) {
+      currentRoomCode = roomCode;
+      listenToMatch(roomCode);
     }
+
+    isLoading = false;
+    notifyListeners();
+
+    return joinedRoom;
   }
 
   Future<bool> finishRoundAndSaveResult() async {
     final isVictory = _getResult();
 
     if (isHost && currentRoomCode != null) {
-      try {
-        await _matchService.updateMatchResult(currentRoomCode!, isVictory);
-      } catch (e) {
-        if (kDebugMode) {
-          print('Erro ao salvar resultado: $e');
-        }
-      }
+      await _matchService.updateMatchResult(currentRoomCode!, isVictory);
     }
 
     return isVictory;

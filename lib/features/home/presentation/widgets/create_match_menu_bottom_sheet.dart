@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
 
+import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
@@ -128,8 +130,17 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
 
             CustomElevatedButton(
                 text: t.homePage.confirm_creation,
-                onPressed: () {
-                  matchController.createMatch(context, selectedPlayers);
+                onPressed: () async {
+                  var roomCode = await matchController.createMatch(selectedPlayers);
+
+                  if (roomCode != null && context.mounted) {
+                    context.pushNamed(AppRoutes.roomLobby, extra: roomCode);
+                  } else {
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(const SnackBar(content: Text('Falha ao Criar partida')));
+                  }
                 }
             ),
           ],

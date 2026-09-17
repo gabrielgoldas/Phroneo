@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
-import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
 import '../../../../i18n/strings.g.dart';
 import '../../service/auth_service.dart';
+import '../controller/auth_controller.dart';
 
 class ProfileMenuBottomSheet extends StatelessWidget {
   final AuthController authController;
