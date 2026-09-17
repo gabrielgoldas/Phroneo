@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/theme/app_colors.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/core/widgets/custom_elevated_button.dart';
-import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
-import 'package:phroneo/features/ordering/model/option.dart';
+import 'package:phroneo/features/home/bloc/match_bloc.dart';
+import 'package:phroneo/features/home/bloc/match_event.dart';
+import 'package:phroneo/features/home/bloc/match_state.dart';
 import 'package:phroneo/i18n/strings.g.dart';
 
 import '../../../../core/router/app_routes.dart';
@@ -12,9 +14,7 @@ import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
 
 class OrderingPage extends StatefulWidget {
-  final MatchController matchController;
-
-  const OrderingPage({ super.key, required this.matchController });
+  const OrderingPage({super.key});
 
   @override
   State<StatefulWidget> createState() => _OrderingPage();
@@ -25,134 +25,151 @@ class _OrderingPage extends State<OrderingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: widget.matchController,
-      builder: (context, child) {
-        List<Option> options = widget.matchController.getOptions();
+    return BlocListener<MatchBloc, MatchState>(
+      listener: (context, state) async {
+        if (state.isVictory != null) {
+          await Future.delayed(const Duration(seconds: 2));
 
-        return Scaffold(
-          appBar: CustomAppBar(),
-          backgroundColor: AppColors.background,
-          body: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  t.orderingPage.sortChoicesInstruction,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: AppFonts.cinzel,
-                    fontSize: AppFontSize.bodyLarge,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.black,
+          if (context.mounted) context.goNamed(AppRoutes.roundResult);
+        }
+      },
+      child: BlocBuilder<MatchBloc, MatchState>(
+        builder: (context, state) {
+          final options = state.options;
+
+          return Scaffold(
+            appBar: CustomAppBar(),
+            backgroundColor: AppColors.background,
+            body: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    t.orderingPage.sortChoicesInstruction,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: AppFonts.cinzel,
+                      fontSize: AppFontSize.bodyLarge,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.black,
+                    ),
                   ),
-                ),
 
-                Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        t.orderingPage.highestNumberLabel,
-                        style: TextStyle(
-                          fontFamily: AppFonts.cinzel,
-                          fontSize: AppFontSize.bodySmall,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.gray500,
+                  Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          t.orderingPage.highestNumberLabel,
+                          style: TextStyle(
+                            fontFamily: AppFonts.cinzel,
+                            fontSize: AppFontSize.bodySmall,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.gray500,
+                          ),
                         ),
                       ),
-                    ),
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: ReorderableListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: options.length,
-                        onReorder: widget.matchController.onReorder,
-                        proxyDecorator:
-                          ( Widget child, int index, Animation<double> animation ) {
-                            return AnimatedBuilder(
-                              animation: animation,
-                              builder: (BuildContext context, Widget? child) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 10,
-                                        offset: Offset(0, 5),
-                                      ),
-                                    ],
-                                  ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        child: ReorderableListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: options.length,
+                          onReorder: ((oldIndex, newIndex) {
+                            context.read<MatchBloc>().add(
+                              ReorderOption(oldIndex, newIndex),
+                            );
+                          }),
+                          proxyDecorator:
+                              (
+                                Widget child,
+                                int index,
+                                Animation<double> animation,
+                              ) {
+                                return AnimatedBuilder(
+                                  animation: animation,
+                                  builder:
+                                      (BuildContext context, Widget? child) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              12.0,
+                                            ),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Colors.black26,
+                                                blurRadius: 10,
+                                                offset: Offset(0, 5),
+                                              ),
+                                            ],
+                                          ),
+                                          child: child,
+                                        );
+                                      },
                                   child: child,
                                 );
                               },
-                              child: child,
+
+                          itemBuilder: (context, index) {
+                            final option = options[index];
+
+                            return Container(
+                              key: ValueKey(
+                                '${option.number}_${option.color.value}',
+                              ),
+                              margin: const EdgeInsets.symmetric(vertical: 8),
+                              width: double.infinity,
+                              height: 60.0,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: option.color,
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Text(
+                                showNumbers ? option.number.toString() : '',
+                                style: TextStyle(
+                                  fontFamily: AppFonts.cinzel,
+                                  color: AppColors.gray200,
+                                  fontSize: AppFontSize.bodyLargeX,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
                             );
                           },
-
-                        itemBuilder: (context, index) {
-                          final option = options[index];
-
-                          return Container(
-                            key: ValueKey(
-                              '${option.number}_${option.color.value}',
-                            ),
-                            margin: const EdgeInsets.symmetric(vertical: 8),
-                            width: double.infinity,
-                            height: 60.0,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: option.color,
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: Text(
-                              showNumbers ? option.number.toString() : '',
-                              style: TextStyle(
-                                fontFamily: AppFonts.cinzel,
-                                color: AppColors.gray200,
-                                fontSize: AppFontSize.bodyLargeX,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        t.orderingPage.lowestNumberLabel,
-                        style: TextStyle(
-                          fontFamily: AppFonts.cinzel,
-                          fontSize: AppFontSize.bodySmall,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.gray500,
                         ),
                       ),
-                    ),
-                  ],
-                ),
 
-                if (widget.matchController.isHost)
-                  CustomElevatedButton(
-                    text: t.orderingPage.doneButton,
-                    onPressed: () async {
-                      setState(() => showNumbers = true);
-                      await widget.matchController.finishRoundAndSaveResult();
-                      await Future.delayed(const Duration(seconds: 2));
-                      if (context.mounted) context.goNamed(AppRoutes.roundResult);
-                    },
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          t.orderingPage.lowestNumberLabel,
+                          style: TextStyle(
+                            fontFamily: AppFonts.cinzel,
+                            fontSize: AppFontSize.bodySmall,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.gray500,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-              ],
+
+                  if (context.read<MatchBloc>().isHost)
+                    CustomElevatedButton(
+                      text: t.orderingPage.doneButton,
+                      onPressed: () async {
+                        setState(() => showNumbers = true);
+                        context.read<MatchBloc>().add(FinishMatch());
+                      },
+                    ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

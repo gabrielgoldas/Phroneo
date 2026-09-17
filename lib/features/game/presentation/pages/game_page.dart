@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/widgets/custom_app_bar.dart';
 import 'package:phroneo/features/game/presentation/widgets/phrase_page.dart';
-import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
+import 'package:phroneo/features/home/bloc/match_bloc.dart';
+import 'package:phroneo/features/home/bloc/match_state.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../core/router/app_routes.dart';
@@ -11,16 +13,13 @@ import '../../../../core/widgets/custom_loading.dart';
 import '../widgets/number_page.dart';
 
 class GamePage extends StatefulWidget {
-  final MatchController matchController;
-
-  const GamePage({ super.key, required this.matchController });
+  const GamePage({super.key});
 
   @override
   State<StatefulWidget> createState() => _GamePage();
 }
 
 class _GamePage extends State<GamePage> {
-
   bool showNumberPage = false;
   bool _isNavigating = false;
 
@@ -30,96 +29,108 @@ class _GamePage extends State<GamePage> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    widget.matchController.addListener(_onMatchStateChanged);
-  }
-
-  void _onMatchStateChanged() async {
-    if (
-        widget.matchController.currentMatch?.status == StatusMatch.finishedRound
-        && !widget.matchController.isHost
-        && !_isNavigating
-    ) {
-      setState(() => _isNavigating = true );
-
-      await Future.delayed(const Duration(seconds: 2));
-      if (mounted) context.goNamed(AppRoutes.roundResult);
-    }
-  }
-
-  @override
-  void dispose() {
-    widget.matchController.removeListener(_onMatchStateChanged);
-    super.dispose();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   widget.matchController.addListener(_onMatchStateChanged);
+  // }
+  //
+  // void _onMatchStateChanged() async {
+  //   if (
+  //       widget.matchController.currentMatch?.status == StatusMatch.finishedRound
+  //       && !widget.matchController.isHost
+  //       && !_isNavigating
+  //   ) {
+  //     setState(() => _isNavigating = true );
+  //
+  //     await Future.delayed(const Duration(seconds: 2));
+  //     if (mounted) context.goNamed(AppRoutes.roundResult);
+  //   }
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   widget.matchController.removeListener(_onMatchStateChanged);
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final myColor = Color(widget.matchController.getMyColor());
-    final matchController = widget.matchController;
-
-    final backgroundColor = showNumberPage
-        ? HSLColor.fromColor(myColor).withLightness(0.35).toColor()
-        : myColor;
-
     const transitionDuration = Duration(milliseconds: 500);
 
-    return AnimatedContainer(
-      duration: transitionDuration,
-      curve: Curves.easeInOut,
-      color: backgroundColor,
-      child: _isNavigating
-          ? Center(
-        child: customLoading(width: 100, color: AppColors.white),
-      )
-          : Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: const CustomAppBar(
-          fontColor: AppColors.background,
-          showBackButton: false,
-          backgroundColor: Colors.transparent,
-        ),
-        body: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onLongPressStart: (_) => togglePageToShow(),
-          onLongPressEnd: (_) => togglePageToShow(),
-          child: SizedBox.expand(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                  vertical: 54.0,
-                ),
-                child: ListenableBuilder(
-                  listenable: matchController,
-                  builder: (context, child) {
-                    if (matchController.currentMatch == null) {
-                      return const CircularProgressIndicator();
-                    }
+    return BlocListener<MatchBloc, MatchState>(
+      listenWhen: (previous, current) {
+        final previousStatus = previous.currentMatch?.status;
+        final currentStatus = current.currentMatch?.status;
 
-                    return AnimatedSwitcher(
-                      duration: transitionDuration,
-                      switchInCurve: Curves.easeIn,
-                      switchOutCurve: Curves.easeOut,
-                      child: showNumberPage
-                          ? NumberPage(
-                        key: ValueKey('number_page'),
-                        number:  matchController.getSecretNumber(),
-                      )
-                          : PhrasePage(
-                        key: ValueKey('phrase_page'),
-                        phrase: matchController.currentMatch!.currentPhrase,
-                        isHost: matchController.isHost,
+        return previousStatus != currentStatus;
+      },
+      listener: (context, state) async {
+        final bloc = context.read<MatchBloc>();
+
+        if (state.currentMatch?.status == StatusMatch.finishedRound &&
+            !bloc.isHost) {
+          setState(() => _isNavigating = true);
+          await Future.delayed(const Duration(seconds: 2));
+          if (context.mounted) context.goNamed(AppRoutes.roundResult);
+        }
+      },
+      child: BlocBuilder<MatchBloc, MatchState>(
+        builder: (context, state) {
+          final bloc = context.read<MatchBloc>();
+          final myColor = Color(bloc.getMyColor());
+          final backgroundColor = showNumberPage
+              ? HSLColor.fromColor(myColor).withLightness(0.35).toColor()
+              : myColor;
+
+          return AnimatedContainer(
+            duration: transitionDuration,
+            curve: Curves.easeInOut,
+            color: backgroundColor,
+            child: _isNavigating
+                ? Center(
+                    child: customLoading(width: 100, color: AppColors.white),
+                  )
+                : Scaffold(
+                    backgroundColor: Colors.transparent,
+                    appBar: const CustomAppBar(
+                      fontColor: AppColors.background,
+                      showBackButton: false,
+                      backgroundColor: Colors.transparent,
+                    ),
+                    body: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onLongPressStart: (_) => togglePageToShow(),
+                      onLongPressEnd: (_) => togglePageToShow(),
+                      child: SizedBox.expand(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24.0,
+                              vertical: 54.0,
+                            ),
+                            child: AnimatedSwitcher(
+                              duration: transitionDuration,
+                              switchInCurve: Curves.easeIn,
+                              switchOutCurve: Curves.easeOut,
+                              child: showNumberPage
+                                  ? NumberPage(
+                                      key: ValueKey('number_page'),
+                                      number: bloc.getSecretNumber(),
+                                    )
+                                  : PhrasePage(
+                                      key: ValueKey('phrase_page'),
+                                      phrase: state.currentMatch!.currentPhrase,
+                                      isHost: bloc.isHost,
+                                    ),
+                            ),
+                          ),
+                        ),
                       ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ),
-        ),
+                    ),
+                  ),
+          );
+        },
       ),
     );
   }

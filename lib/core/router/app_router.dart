@@ -4,7 +4,6 @@ import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/core/router/app_routes.dart';
 import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:phroneo/features/game/presentation/pages/game_page.dart';
-import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
 import 'package:phroneo/features/home/presentation/pages/home_page.dart';
 import 'package:phroneo/features/home/presentation/widgets/qr_scanner_screen.dart';
 import 'package:phroneo/features/onboarding/presentation/pages/onboarding_page.dart';
@@ -14,13 +13,10 @@ import 'package:phroneo/features/ordering/presentation/pages/ordering_page.dart'
 import 'package:phroneo/features/result/presentation/pages/round_result_page.dart';
 import 'package:phroneo/features/room_lobby/presentation/pages/room_lobby_page.dart';
 
-import '../constants/constants.dart';
-
-GoRouter createRouter(AuthController authController, MatchController matchController) {
+GoRouter createRouter(AuthController authController) {
   return GoRouter(
     refreshListenable: Listenable.merge([
       authController,
-      matchController,
     ]),
     redirect: (context, state)  {
 
@@ -29,14 +25,6 @@ GoRouter createRouter(AuthController authController, MatchController matchContro
       final itsOnLoginPage = state.uri.path == '/';
       if (!logged && !itsOnLoginPage) return '/';
       if (logged && itsOnLoginPage) return '/home';
-
-      // Match
-      final match = matchController.currentMatch;
-      final itsOnLobbyPage = state.uri.path == '/room-lobby';
-
-      if (match?.status == StatusMatch.playing && itsOnLobbyPage) {
-        return '/game';
-      }
 
       return null;
     },
@@ -57,17 +45,14 @@ GoRouter createRouter(AuthController authController, MatchController matchContro
       GoRoute(
         name: AppRoutes.home,
         path: '/home',
-        builder: (context, state) => HomePage( matchController: matchController )
+        builder: (context, state) => HomePage()
       ),
       GoRoute(
         name: AppRoutes.roomLobby,
         path: '/room-lobby',
         builder: (context, state) {
           final roomCode = state.extra as String?;
-          return RoomLobbyPage(
-            roomCode: roomCode,
-            matchController: matchController,
-          );
+          return RoomLobbyPage( roomCode: roomCode );
         },
       ),
       GoRoute(
@@ -78,17 +63,17 @@ GoRouter createRouter(AuthController authController, MatchController matchContro
       GoRoute(
         name: AppRoutes.game,
         path: '/game',
-        builder: (context, state) => GamePage( matchController: matchController )
+        builder: (context, state) => GamePage()
       ),
       GoRoute(
         name: AppRoutes.ordering,
         path: '/ordering',
-        builder: (context, state) => OrderingPage( matchController: matchController)
+        builder: (context, state) => OrderingPage()
       ),
       GoRoute(
         name: AppRoutes.roundResult,
         path: '/round-result',
-        builder: (context, state) => RoundResultPage( matchController: matchController )
+        builder: (context, state) => RoundResultPage()
       )
     ],
   );

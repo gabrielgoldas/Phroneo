@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:phroneo/features/auth/service/auth_service.dart';
-import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
+import 'package:phroneo/features/home/bloc/match_bloc.dart';
 import 'package:phroneo/features/onboarding/repository/onboarding_repository.dart';
 
 import '../../features/home/repository/phrase_repository.dart';
@@ -41,8 +41,8 @@ void setupDependencies() {
       )
   );
 
-  getIt.registerLazySingleton<MatchController>(
-          () => MatchController(
+  getIt.registerLazySingleton<MatchBloc>(
+          () => MatchBloc(
               matchService: getIt<MatchService>(),
               authService: getIt<AuthService>()
           )

@@ -1,9 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:phroneo/core/di/injection.dart';
-import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:phroneo/features/home/bloc/match_bloc.dart';
+import 'package:phroneo/features/home/bloc/match_event.dart';
+import 'package:phroneo/features/home/bloc/match_state.dart';
 
+import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
 import '../../../../core/theme/app_fonts.dart';
@@ -25,15 +29,8 @@ class CreateMatchMenuBottomSheet extends StatefulWidget {
 }
 
 class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
-  late final MatchController matchController;
   int selectedPlayers = 2;
   Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    matchController = getIt<MatchController>();
-  }
 
   void startIncrement() {
     _timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
@@ -55,85 +52,112 @@ class _CreateMatchMenuBottomSheet extends State<CreateMatchMenuBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return matchController.isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : SafeArea(
-      child: Padding(
-        padding: EdgeInsets.all(24.00),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              t.homePage.create_match,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: AppFontSize.titleMedium,
-                fontFamily: AppFonts.cinzel,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryColor,
+    return BlocListener<MatchBloc, MatchState>(
+      listenWhen: (previous, current) {
+        final prevStatus = previous.currentRoomCode;
+        final currentStatus = current.currentRoomCode;
+
+        return prevStatus != currentStatus;
+      },
+      listener: (context, state) {
+
+        if (state.currentRoomCode != null && context.mounted) {
+          context.pushNamed(AppRoutes.roomLobby, extra: state.currentRoomCode);
+        } else {
+          if (!context.mounted) return;
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Falha ao Criar partida')));
+        }
+
+      },
+      child: BlocBuilder<MatchBloc, MatchState>(
+          builder: (context, state) {
+
+            if (state.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            return SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(24.00),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      t.homePage.create_match,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: AppFontSize.titleMedium,
+                        fontFamily: AppFonts.cinzel,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    Text(
+                      t.homePage.player_count_question,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: AppFontSize.titleSmall,
+                        fontFamily: AppFonts.cormorantInfant,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+
+                    const SizedBox(height: 2),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onLongPressStart: (_) => startDecrement(),
+                          onLongPressEnd: (_) => stop(),
+                          child: IconButton(
+                            onPressed: selectedPlayers > 2
+                                ? () => setState(() => selectedPlayers--)
+                                : null,
+                            icon: const Icon(Icons.remove),
+                          ),
+                        ),
+
+                        Text(
+                          '$selectedPlayers',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        GestureDetector(
+                          onLongPressStart: (_) => startIncrement(),
+                          onLongPressEnd: (_) => stop(),
+                          child: IconButton(
+                            onPressed: selectedPlayers < 20
+                                ? () => setState(() => selectedPlayers++)
+                                : null,
+                            icon: const Icon(Icons.add),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 18),
+
+                    CustomElevatedButton(
+                        text: t.homePage.confirm_creation,
+                        onPressed: () {
+                          context.read<MatchBloc>().add(CreateMatch(selectedPlayers));
+                        }
+                    ),
+                  ],
+                ),
               ),
-            ),
-
-            const SizedBox(height: 24),
-
-            Text(
-              t.homePage.player_count_question,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: AppFontSize.titleSmall,
-                fontFamily: AppFonts.cormorantInfant,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-            const SizedBox(height: 2),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onLongPressStart: (_) => startDecrement(),
-                  onLongPressEnd: (_) => stop(),
-                  child: IconButton(
-                    onPressed: selectedPlayers > 2
-                        ? () => setState(() => selectedPlayers--)
-                        : null,
-                    icon: const Icon(Icons.remove),
-                  ),
-                ),
-
-                Text(
-                  '$selectedPlayers',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                GestureDetector(
-                  onLongPressStart: (_) => startIncrement(),
-                  onLongPressEnd: (_) => stop(),
-                  child: IconButton(
-                    onPressed: selectedPlayers < 20
-                        ? () => setState(() => selectedPlayers++)
-                        : null,
-                    icon: const Icon(Icons.add),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 18),
-
-            CustomElevatedButton(
-                text: t.homePage.confirm_creation,
-                onPressed: () {
-                  matchController.createMatch(context, selectedPlayers);
-                }
-            ),
-          ],
-        ),
+            );
+          }
       ),
     );
   }
