@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/di/injection.dart';
-import 'package:phroneo/features/auth/service/auth_service.dart';
+import 'package:phroneo/domain/usecase/auth_use_case.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font_size.dart';
-import '../../features/auth/presentation/widgets/profile_menu_bottom_sheet.dart';
+import '../../presentation/pages/auth/widgets/profile_menu_bottom_sheet.dart';
 import '../../i18n/strings.g.dart';
 import '../theme/app_fonts.dart';
 
@@ -26,7 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final color = fontColor;
-    final authService = getIt<AuthService>();
+    final authService = getIt<AuthUseCase>();
     final String? photoUrl = authService.currentUser?.photoURL;
 
     return AppBar(

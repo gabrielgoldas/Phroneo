@@ -5,8 +5,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:phroneo/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
+import 'package:phroneo/presentation/controllers/auth_controller.dart';
+import 'package:phroneo/presentation/controllers/match_controller.dart';
 
 import 'core/di/injection.dart';
 import 'core/router/app_router.dart';
