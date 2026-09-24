@@ -2,19 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phroneo/core/di/injection.dart';
 import 'package:phroneo/core/router/app_routes.dart';
-import 'package:phroneo/features/auth/presentation/controller/auth_controller.dart';
-import 'package:phroneo/features/game/presentation/pages/game_page.dart';
-import 'package:phroneo/features/home/presentation/controller/match_controller.dart';
-import 'package:phroneo/features/home/presentation/pages/home_page.dart';
-import 'package:phroneo/features/home/presentation/widgets/qr_scanner_screen.dart';
-import 'package:phroneo/features/onboarding/presentation/pages/onboarding_page.dart';
-import 'package:phroneo/features/auth/presentation/pages/login_page.dart';
-import 'package:phroneo/features/onboarding/repository/onboarding_repository.dart';
-import 'package:phroneo/features/ordering/presentation/pages/ordering_page.dart';
-import 'package:phroneo/features/result/presentation/pages/round_result_page.dart';
-import 'package:phroneo/features/room_lobby/presentation/pages/room_lobby_page.dart';
+import 'package:phroneo/presentation/controllers/auth_controller.dart';
+import 'package:phroneo/presentation/pages/home/home_page.dart';
+import 'package:phroneo/presentation/pages/home/widgets/qr_scanner_screen.dart';
+import 'package:phroneo/presentation/pages/onboarding/onboarding_page.dart';
+import 'package:phroneo/presentation/pages/auth/login_page.dart';
+import 'package:phroneo/data/onboarding/onboarding_data.dart';
+import 'package:phroneo/presentation/pages/ordering/ordering_page.dart';
+import 'package:phroneo/presentation/pages/result/round_result_page.dart';
+import 'package:phroneo/presentation/pages/room_lobby/room_lobby_page.dart';
 
-import '../constants/constants.dart';
+import '../../data/constants/constants.dart';
+import '../../presentation/controllers/match_controller.dart';
+import '../../presentation/pages/game/game_page.dart';
 
 GoRouter createRouter(AuthController authController, MatchController matchController) {
   return GoRouter(
@@ -51,7 +51,7 @@ GoRouter createRouter(AuthController authController, MatchController matchContro
         name: AppRoutes.onboarding,
         path: '/onboarding',
         builder: (context, state) => Onboarding(
-          onboardingRepository: getIt<OnboardingRepository>()
+          onboardingRepository: getIt<OnboardingData>()
         ),
       ),
       GoRoute(
